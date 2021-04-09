@@ -1,30 +1,76 @@
 <html>
     <head>
-
+        <link rel="stylesheet" href="/css/QueryPage.css">
     </head>
     <body>
-        <!-- Add condition to keep table hidden if empty set -->
-        <table>
-            <tr>
-                <% for(column of columns){ %>
-                    <th>
-                        <%= column %>
-                    </th>
+        <div class = "container">
 
-               <% } %>
-            </tr>
-
-            <% for(row of rows){ %>
+            <div id = "MainRes" >
+                <!-- Add condition to keep table hidden if empty set -->
+            <table id = "ResultTable">
                 <tr>
-                    <% for(value of Object.values(row)){ %>
-                        <td>
-                            <%= value%>
-                        </td>
-
-                    <% } %>
+                    <% for(column of columns){ %>
+                        <th>
+                            <%= column %>
+                        </th>
+    
+                   <% } %>
                 </tr>
-            <% } %>
-        </table>
+    
+                <% for(row of rows){ %>
+                    <tr>
+                        <% for(value of Object.values(row)){ %>
+                            <td>
+                                <%= value%>
+                            </td>
+    
+                        <% } %>
+                    </tr>
+                <% } %>
+            </table>
+    
+    
+            </div>
+    
+            <div id ="SideFilter">
+    
+    
+    
+                <form action="/query/fetch-Data" class = "side">
+                    <fieldset id = "domainMotifSelection">
+                        <input type="radio" name = "domainMotifSelection" id = "domain_radio" value = "domain">
+                        <label for="domain">Domain</label>
+                        <input type="radio" name = "domainMotifSelection" id = "motif_radio" value = "motif">
+                        <label for="motif">Motif</label>
+    
+                    </fieldset>
+                    <fieldset id = "pathogenSelection">
+                        <input type="radio" name="pathogenSelection" id="bacteria_table" value = "bacteria_domainpair">
+                        <label for="bacteria">Bacteria</label>
+                        <input type="radio" name="pathogenSelection" id="fungus_table" value = "fungus_domainpair">
+                        <label for="fungus">Fungus</label>
+                        <input type="radio" name="pathogenSelection" id="virus_table" value = "virus_domainpair">
+                        <label for="virus">Virus</label>
+                        <input type="radio" name="pathogenSelection" id="others_table" value = "others_domainpair">
+                        <label for="others">Others</label>
+    
+                    </fieldset>
+                    <fieldset id = "columnSelection">
+                        
 
+                    </fieldset>
+                    <fieldset id = "specificColumnEntrySelection">
+
+                    </fieldset>
+    
+                    
+    
+                </form>
+    
+            </div>
+
+        </div>
+        
+        
     </body>
 </html>

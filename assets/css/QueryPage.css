@@ -1,0 +1,13 @@
+.container{
+    display:flex;
+    
+}
+
+#SideFilter{
+    width : 45vw;
+    
+}
+
+.side{
+    position: fixed;
+}
