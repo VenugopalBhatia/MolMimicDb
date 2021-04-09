@@ -17,9 +17,9 @@
                    <% } %>
                 </tr>
     
-                <% for(row of rows){ %>
+                <% for(let i = 0; i<2000 ; i++){ %>
                     <tr>
-                        <% for(value of Object.values(row)){ %>
+                        <% for(value of Object.values(rows[i])){ %>
                             <td>
                                 <%= value%>
                             </td>
@@ -46,13 +46,13 @@
                     </fieldset>
                     <fieldset id = "pathogenSelection">
                         <input type="radio" name="pathogenSelection" id="bacteria_table" value = "bacteria_domainpair">
-                        <label for="bacteria">Bacteria</label>
+                        <label for="bacteria_table">Bacteria</label>
                         <input type="radio" name="pathogenSelection" id="fungus_table" value = "fungus_domainpair">
-                        <label for="fungus">Fungus</label>
+                        <label for="fungus_table">Fungus</label>
                         <input type="radio" name="pathogenSelection" id="virus_table" value = "virus_domainpair">
-                        <label for="virus">Virus</label>
+                        <label for="virus_table">Virus</label>
                         <input type="radio" name="pathogenSelection" id="others_table" value = "others_domainpair">
-                        <label for="others">Others</label>
+                        <label for="others_table">Others</label>
     
                     </fieldset>
                     <fieldset id = "columnSelection">
@@ -71,6 +71,9 @@
 
         </div>
         
-        
+        <script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"></script>
+        <script type = "text/javascript" src = "/js/QueryPage.js"></script>
     </body>
 </html>
