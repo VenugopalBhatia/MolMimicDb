@@ -1,0 +1,30 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <!-- Add condition to keep table hidden if empty set -->
+        <table>
+            <tr>
+                <% for(column of columns){ %>
+                    <th>
+                        <%= column %>
+                    </th>
+
+               <% } %>
+            </tr>
+
+            <% for(row of rows){ %>
+                <tr>
+                    <% for(value of Object.values(row)){ %>
+                        <td>
+                            <%= value%>
+                        </td>
+
+                    <% } %>
+                </tr>
+            <% } %>
+        </table>
+
+    </body>
+</html>
