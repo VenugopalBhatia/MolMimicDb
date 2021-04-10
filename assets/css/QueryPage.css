@@ -5,9 +5,10 @@
 
 #SideFilter{
     width : 45vw;
-    
+    min-width: 100px;
 }
 
 .side{
     position: fixed;
+    min-width: 200px;
 }

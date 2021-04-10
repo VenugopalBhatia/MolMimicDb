@@ -90,7 +90,7 @@ function searchByColumn(){
 }
 
 var createDropdownInDOM  = function(data,id,type){
-    var htmlString = `<select id="${id}" name="${id}" ${type}> `
+    var htmlString = `<select id="${id}" name="${id}" ${type} style = "width: 100%"> `
     for(var row of data){ 
         htmlString+=`<option> ${row} </option>`
     }

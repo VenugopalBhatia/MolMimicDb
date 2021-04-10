@@ -41,18 +41,20 @@
             
 
                 </div>
-                
-        
-                </div>
-
+            <% }else{ %>
+                <h4>No results found!! Recheck parameters entered</h4>
             <% } %>
+        
+            </div>
+
+            
             
     
             <div id ="SideFilter">
     
     
     
-                <form action="/query/fetch-Data" class = "side">
+                <form action="/query" method = "POST" class = "side">
                     <fieldset id = "domainMotifSelection">
                         <input type="radio" name = "domainMotifSelection" id = "domain_radio" value = "domain">
                         <label for="domain">Domain</label>
@@ -77,6 +79,9 @@
                     </fieldset>
                     <fieldset id = "specificColumnEntrySelection">
                         <span class = "searchByColumn"></span>
+                    </fieldset>
+                    <fieldset id = "fetchResults">
+                        <input type="submit" id = "fetchData" value="Go">
                     </fieldset>
     
                     

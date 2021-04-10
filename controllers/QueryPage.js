@@ -4,19 +4,36 @@ const db = require('../models/mimicDbConnector');
 
 var queryResult = [];
 module.exports.displayTables = function(req,res){
-    db.query("SELECT * from virus_domainpair",function(err,rows,fields){
+    // console.log("Request body",req.body);
+    let query_ = ""
+    if(req.body.searchByColumn == null || req.body.pathogenSelection == null){
+        query_ = `SELECT distinct * from ${req.body.pathogenSelection}`
+    }else{
+        var sbc = JSON.stringify(req.body.searchByColumn)
+        sbc = sbc.replace("[","")
+        sbc = sbc.replace("]","")
+        
+        query_ = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc}) `
+    }
+    
+    db.query(query_,function(err,rows,fields){
         if(err){
-            console.log("Error",err);
+            // console.log("Error",err);
+            return res.render('QueryPage',{
+                rows:[],
+                columns :[]
+            })
         }else{
             
             var columnNames = Object.keys(rows[0]);
             queryResult = rows;
             // console.log(queryResult);
-            res.render('QueryPage',{
+            return res.render('QueryPage',{
                 rows:rows,
                 columns : columnNames
             })
         }
+        
     });
     
 };
@@ -86,7 +103,12 @@ module.exports.getColumnValues = function(req,res){
     })
 }
 
-module.exports.queryResult = function(req,res){
+module.exports.queryCSVResult = function(req,res){
     var parsedQuery = JSON.parse(JSON.stringify(queryResult));
     console.log(parsedQuery);
 }
+
+// module.exports.queryResult = function(req,res){
+//     console.log(req.body);
+//     return res.redirect('back');
+// }
