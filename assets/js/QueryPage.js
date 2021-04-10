@@ -7,6 +7,7 @@ var domainMotifSelect = $('input[type=radio][name="domainMotifSelection"]').chan
     $('#others_table').val(`others_${domainMotifSelected}pair`)
 });
 
+
 var tableSelect = $('input[type=radio][name="domainMotifSelection"]').change(function(){
     var pathogenTableSelected = $('input[name="pathogenSelection"]:checked').val()
     $.ajax({
@@ -17,10 +18,11 @@ var tableSelect = $('input[type=radio][name="domainMotifSelection"]').change(fun
         },
         async:false,
         success: function(resData){
-            var htmlData = createDropdownInDOM(resData["data"],"tableColumns");
-            console.log(htmlData)
+            var htmlData = createDropdownInDOM(resData["data"],"tableColumns","");
+            // console.log(htmlData)
             $('.tableColumns').html(htmlData);
             $('#tableColumns').change(searchByColumn).change();
+            $("#tableColumns").select2();
         }
 
     })
@@ -28,15 +30,29 @@ var tableSelect = $('input[type=radio][name="domainMotifSelection"]').change(fun
     
 })
 
+$('input[name=pathogenSelection').change(function(){
+    // console.log("Changed Table selection")
+    if($("#tableColumns").length){
+        $('#tableColumns').val(null).trigger('change');
+        
+    }
+    if($("#searchByColumn").length){
+        $('.searchByColumn').html("");
+    }
+    
+
+})
+
+
 
 function searchByColumn(){
     let selectedVal = $(this).val();
-    console.log(selectedVal);
+    // console.log(selectedVal);
     var htmlData = "";
-    if(selectedVal == 'No Filter Selected'){
-        return;
-    }else if(selectedVal == 'Pathogen_ID'){
-        htmlData = createSearchBarInDOM("searchByColumn");
+    if(selectedVal == null){
+        null;
+    // }else if(selectedVal == 'Pathogen_ID'){
+    //     htmlData = createSearchBarInDOM("searchByColumn");
     }else{
         let pathogenTableSelected = $('input[name="pathogenSelection"]:checked').val()
         $.ajax({
@@ -56,8 +72,10 @@ function searchByColumn(){
                 }
                 
                 
-                htmlData = createDropdownInDOM(rowVals,"searchByColumn")
-                // console.log("HTML Data dropdown",htmlData)   
+                htmlData = createDropdownInDOM(rowVals,"searchByColumn","multiple")
+                // console.log("HTML Data dropdown",htmlData)  
+                $('.searchByColumn').html(htmlData);
+                $('#searchByColumn').select2(); 
             },
             error: function(err){
                 console.log("Error: ",err);
@@ -66,13 +84,13 @@ function searchByColumn(){
         
         
     }
-    console.log("HTML Data",htmlData)
-    $('.searchByColumn').html(htmlData);
+    // console.log("HTML Data",htmlData)
+    
     
 }
 
-var createDropdownInDOM  = function(data,id){
-    var htmlString = `<select id="${id}" name="${id}"> <option> No Filter Selected </option>`
+var createDropdownInDOM  = function(data,id,type){
+    var htmlString = `<select id="${id}" name="${id}" ${type}> `
     for(var row of data){ 
         htmlString+=`<option> ${row} </option>`
     }
@@ -84,6 +102,11 @@ var createSearchBarInDOM = function(id){
     var htmlString = `<input type = "text" id=${id} name=${id} ></input>`
     return htmlString;
 }
+
+$(document).ready(function(){
+    
+
+})
 
 
 
