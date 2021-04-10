@@ -54,6 +54,38 @@ module.exports.getColumnSelectionDropdown = function(req,res){
 
 }
 
+module.exports.getColumnValues = function(req,res){
+    let pathogenTable = req.query.pathogenTable;
+    let column = req.query.column;
+    db.query(`SELECT DISTINCT ${column} FROM ${pathogenTable}`,function(err,rows,fields){
+        
+        if(err){
+            console.log("Error",err);
+            if(req.xhr){
+                return res.status(500).json({
+                    message: "error"
+
+                })
+            }
+        }else{
+            
+            let queryRes = []
+            for(let i of rows){
+                queryRes.push(i);
+            }
+            // let queryColumns = JSON.parse(JSON.stringify(columns));
+            // console.log(queryColumns)
+            if(req.xhr){
+                return res.status(200).json({
+                    message: "Columns",
+                    data: queryRes
+
+                })
+            }
+        }
+    })
+}
+
 module.exports.queryResult = function(req,res){
     var parsedQuery = JSON.parse(JSON.stringify(queryResult));
     console.log(parsedQuery);
