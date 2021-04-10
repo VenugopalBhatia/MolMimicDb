@@ -37,7 +37,7 @@ $('input[name=pathogenSelection').change(function(){
         
     }
     if($("#searchByColumn").length){
-        $('.searchByColumn').html("");
+        $('#searchByColumn').val(null).trigger('change');
     }
     
 

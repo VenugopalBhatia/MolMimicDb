@@ -18,7 +18,7 @@ module.exports.displayTables = function(req,res){
     
     db.query(query_,function(err,rows,fields){
         if(err){
-            // console.log("Error",err);
+            console.log("Error",err);
             return res.render('QueryPage',{
                 rows:[],
                 columns :[]
