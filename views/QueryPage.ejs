@@ -7,30 +7,46 @@
 
             <div id = "MainRes" >
                 <!-- Add condition to keep table hidden if empty set -->
-            <table id = "ResultTable">
-                <tr>
-                    <% for(column of columns){ %>
-                        <th>
-                            <%= column %>
-                        </th>
-    
-                   <% } %>
-                </tr>
-    
-                <% for(let i = 0; i<2000 ; i++){ %>
-                    <tr>
-                        <% for(value of Object.values(rows[i])){ %>
-                            <td>
-                                <%= value%>
-                            </td>
-    
+            <% var minValue = Math.min(2000,rows.length) %>
+            <% if(minValue!=0){ %>
+                <div>
+                    <span>
+                        <h5>Showing <%= minValue %> of <%= rows.length %> records</h5>
+                    </span>
+
+                </div>
+                <div>
+
+                    <table id = "ResultTable">
+                        <tr>
+                            <% for(column of columns){ %>
+                                <th>
+                                    <%= column %>
+                                </th>
+            
+                           <% } %>
+                        </tr>
+            
+                        <% for(let i = 0; i<minValue ; i++){ %>
+                            <tr>
+                                <% for(value of Object.values(rows[i])){ %>
+                                    <td>
+                                        <%= value%>
+                                    </td>
+            
+                                <% } %>
+                            </tr>
                         <% } %>
-                    </tr>
-                <% } %>
-            </table>
-    
-    
-            </div>
+                    </table>
+            
+
+                </div>
+                
+        
+                </div>
+
+            <% } %>
+            
     
             <div id ="SideFilter">
     
