@@ -37,6 +37,8 @@
     color: white;
     padding: 10px 15px;
     border: none;
+    right:0;
+    transition: 0.5s;
   }
   
   .openbtn:hover {

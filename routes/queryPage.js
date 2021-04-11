@@ -5,7 +5,7 @@ const queryPage = require('../controllers/QueryPage');
 const { query } = require('../models/mimicDbConnector');
 
 // will create routes for queries
-router.get('/',queryPage.displayTables);
+router.get('/',queryPage.getQueryPageOnLoad);
 router.post('/',queryPage.displayTables);
 router.get('/getCSVData',queryPage.queryCSVResult);
 router.get('/get-dropdown',queryPage.getColumnSelectionDropdown);

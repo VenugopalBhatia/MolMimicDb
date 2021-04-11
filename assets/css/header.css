@@ -1,5 +1,5 @@
 header {
-    background-image: linear-gradient(to right, #245db3, #4d7fff);
+    background-image: linear-gradient(to right, #1e4c91, #4d7fff);
     margin: 0;
     display: flex;
     align-items: center;
@@ -11,7 +11,7 @@ header {
   
   header h1 {
     padding: 10px;
-    color: white;
+    color: rgb(246, 246, 250);
     font-family: sans-serif;
   }
   
