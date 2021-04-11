@@ -11,7 +11,7 @@ module.exports.getQueryPageOnLoad = function(req,res){
     })
 }
 module.exports.displayTables = function(req,res){
-    // console.log("Request body",req.body);
+    // console.log("****** Request body ******",req.body);
     let query_ = ""
     if(req.body.searchByColumn == null || req.body.tableColumns == null){
         query_ = `SELECT distinct * from ${req.body.pathogenSelection}`
@@ -19,8 +19,11 @@ module.exports.displayTables = function(req,res){
         var sbc = JSON.stringify(req.body.searchByColumn)
         sbc = sbc.replace("[","")
         sbc = sbc.replace("]","")
+        sbc = sbc.trim()
+        // console.log("***** sbc *****",sbc)
         
         query_ = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc}) `
+        // console.log("***** Query *****",query_)
     }
     
     db.query(query_,function(err,rows,fields){
@@ -29,20 +32,37 @@ module.exports.displayTables = function(req,res){
             return res.render('QueryPage',{
                 rows:[],
                 columns :[],
-                message: "No results found, kindly check filter parameters"
+                message: "An error occurred in running query: " + err
             })
         }else{
-            
-            var columnNames = Object.keys(rows[0]);
-            queryResult = query_;
-            // console.log(queryResult);
-            return res.render('QueryPage',{
-                rows:rows,
-                columns : columnNames,
-                ColumnName: req.body.tableColumns,
-                ColumnValues:sbc
+            try{
+                if(rows.length!=0){
+                    var columnNames = Object.keys(rows[0]);
+                    queryResult = query_;
+                    // console.log(queryResult);
+                return res.render('QueryPage',{
+                    rows:rows,
+                    columns : columnNames,
+                    ColumnName: req.body.tableColumns,
+                    ColumnValues:sbc
+                    })
 
-            })
+                }else{
+                    return res.render('QueryPage',{
+                        rows:[],
+                        columns :[],
+                        message: "No results found, kindly check filter parameters"
+                    })
+                }
+               
+            }catch(err){
+                res.render('QueryPage',{
+                    rows:[],
+                    columns :[],
+                    message: "An error occurred in running query: " + err
+                })
+            
+            }
         }
         
     });
