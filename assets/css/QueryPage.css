@@ -1,14 +1,45 @@
 .container{
-    display:flex;
+    /* display:flex; */
     
 }
 
 #SideFilter{
-    width : 45vw;
-    min-width: 100px;
+    /* width : 45vw; */
+    /* min-width: 100px; */
 }
 
 .side{
-    position: fixed;
-    min-width: 200px;
+    /* position: fixed; */
+    /* min-width: 200px; */
 }
+#ResultTable{
+    width:100vw
+}
+#ResultTable th{
+    color: rgb(226, 226, 226);
+}
+#ResultTable tr:nth-child(even){
+    background-color: rgb(81, 123, 160);
+
+}
+#ResultTable tr:nth-child(odd){
+    background-color: rgb(69, 103, 133);
+
+}
+
+
+/* Style the button that is used to open the sidepanel */
+.openbtn {
+    position: fixed;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: rgba(62, 62, 63, 0.548);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+  
+  .openbtn:hover {
+    background-color: #444;
+    position: fixed;
+  }

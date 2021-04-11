@@ -1,64 +1,11 @@
-<html>
-<head>
 
-</head>
-
-<body>
     
     <h1>
         Home Page
     </h1>
-    <div id ="SideFilter">
+    <%- include('_queryForm') %>
     
+
+
+
     
-    
-        <form action="/query" method = "POST" class = "side">
-            <fieldset id = "domainMotifSelection">
-                <input type="radio" name = "domainMotifSelection" id = "domain_radio" value = "domain">
-                <label for="domain">Domain</label>
-                <input type="radio" name = "domainMotifSelection" id = "motif_radio" value = "motif">
-                <label for="motif">Motif</label>
-
-            </fieldset>
-            <fieldset id = "pathogenSelection">
-                <input type="radio" name="pathogenSelection" id="bacteria_table" value = "bacteria_domainpair">
-                <label for="bacteria_table">Bacteria</label>
-                <input type="radio" name="pathogenSelection" id="fungus_table" value = "fungus_domainpair">
-                <label for="fungus_table">Fungus</label>
-                <input type="radio" name="pathogenSelection" id="virus_table" value = "virus_domainpair">
-                <label for="virus_table">Virus</label>
-                <input type="radio" name="pathogenSelection" id="others_table" value = "others_domainpair">
-                <label for="others_table">Others</label>
-
-            </fieldset>
-            <fieldset id = "columnSelection">
-                <span class = "tableColumns"></span>
-
-            </fieldset>
-            <fieldset id = "specificColumnEntrySelection">
-                <span class = "searchByColumn"></span>
-            </fieldset>
-            <fieldset id = "fetchResults">
-                <input type="submit" id = "fetchData" value="Go">
-            </fieldset>
-
-            
-
-        </form>
-
-    </div>
-
-
-
-
-
-    <script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script type = "text/javascript" src = "/js/QueryPage.js"></script>
-
-</body>
-
-</html>

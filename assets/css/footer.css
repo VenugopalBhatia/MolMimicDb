@@ -1,0 +1,26 @@
+footer {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    height: 15vh;
+    box-sizing: border-box;
+    background-color: #474646;
+    color: white;
+    font-family: sans-serif;
+  }
+
+  footer p {
+    margin: 5px;
+  }
+  
+  footer ul {
+    padding: 10px;
+    list-style-type: none;
+  }
+  
+  footer ul a {
+    text-decoration: none;
+    color: #c7c0c0;
+  }
+  

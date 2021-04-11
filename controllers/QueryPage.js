@@ -26,7 +26,7 @@ module.exports.displayTables = function(req,res){
         }else{
             
             var columnNames = Object.keys(rows[0]);
-            queryResult = rows;
+            queryResult = query_;
             // console.log(queryResult);
             return res.render('QueryPage',{
                 rows:rows,
