@@ -1,0 +1,39 @@
+.content{
+    min-height: 75vh;
+}
+.startButton button{
+    border: none;
+    background-color: rgb(109, 134, 180);
+    font-size: 20px;
+    /* font-weight: bold; */
+    padding: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    /* margin: 25px; */
+}
+
+.startButton{
+    position: relative;
+    top:50vh;
+    left:50%;
+    
+    
+
+}
+
+/* Style the button that is used to open the sidepanel */
+.openbtn {
+    position: fixed;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: rgba(62, 62, 63, 0.548);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    right:0;
+    transition: 0.5s;
+  }
+  
+  .openbtn:hover {
+    background-color: #444;
+    position: fixed;
+  }

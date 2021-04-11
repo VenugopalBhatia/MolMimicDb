@@ -1,13 +1,16 @@
 footer {
+    
     margin: 0;
     display: flex;
     align-items: center;
     min-height: 40px;
     height: 15vh;
+    width: 100%;
     box-sizing: border-box;
     background-color: #474646;
     color: white;
     font-family: sans-serif;
+    
   }
 
   footer p {
