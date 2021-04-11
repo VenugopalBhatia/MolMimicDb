@@ -7,7 +7,7 @@ module.exports.getQueryPageOnLoad = function(req,res){
     return res.render('QueryPage',{
         rows:[],
         columns :[],
-        message: "Welcome! get started by clicking the button on the left"
+        message: "Welcome! get started by clicking the button on the right"
     })
 }
 module.exports.displayTables = function(req,res){
