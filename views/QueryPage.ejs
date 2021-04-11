@@ -15,6 +15,13 @@
                     <span>
                         <h5>Showing <%= minValue %> of <%= rows.length %> records</h5>
                     </span>
+                    <span>
+                        <% if( ColumnName  == null || ColumnValues == null ){ %>
+                            <h5>Showing all values</h5>
+                        <% } else {%>
+                        <h5>Values for Column = <%=ColumnName%>, Values = <%=ColumnValues%> </h5>
+                        <% } %>
+                    </span>
 
                 </div>
                 <div>
@@ -44,7 +51,7 @@
 
                 </div>
             <% }else{ %>
-                <h4>No results found!! Recheck parameters entered</h4>
+                <h4><%= message %>></h4>
             <% } %>
         
             </div>

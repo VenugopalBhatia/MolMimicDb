@@ -3,10 +3,17 @@ const express = require('express')
 const db = require('../models/mimicDbConnector');
 
 var queryResult = [];
+module.exports.getQueryPageOnLoad = function(req,res){
+    return res.render('QueryPage',{
+        rows:[],
+        columns :[],
+        message: "Welcome! get started by clicking the button on the left"
+    })
+}
 module.exports.displayTables = function(req,res){
     // console.log("Request body",req.body);
     let query_ = ""
-    if(req.body.searchByColumn == null || req.body.pathogenSelection == null){
+    if(req.body.searchByColumn == null || req.body.tableColumns == null){
         query_ = `SELECT distinct * from ${req.body.pathogenSelection}`
     }else{
         var sbc = JSON.stringify(req.body.searchByColumn)
@@ -21,7 +28,8 @@ module.exports.displayTables = function(req,res){
             console.log("Error",err);
             return res.render('QueryPage',{
                 rows:[],
-                columns :[]
+                columns :[],
+                message: "No results found, kindly check filter parameters"
             })
         }else{
             
@@ -30,7 +38,10 @@ module.exports.displayTables = function(req,res){
             // console.log(queryResult);
             return res.render('QueryPage',{
                 rows:rows,
-                columns : columnNames
+                columns : columnNames,
+                ColumnName: req.body.tableColumns,
+                ColumnValues:sbc
+
             })
         }
         
