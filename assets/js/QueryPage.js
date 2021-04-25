@@ -65,11 +65,13 @@ function searchByColumn(){
             async:false,
             success: function(resData){
                 let rowVals = [];
-                for(let i of resData['data']){
-                    for(let key in i){
-                        rowVals.push(i[key])
-                    }
-                }
+                let FieldVals = resData['data']
+                rowVals = FieldVals.map(function(row){ return row[selectedVal] })
+                // for(let i of resData['data']){
+                //     for(let key in i){
+                //         rowVals.push(i[key])
+                //     }
+                // }
                 
                 
                 htmlData = createDropdownInDOM(rowVals,"searchByColumn","multiple")
@@ -121,18 +123,18 @@ var createDropdownInDOM  = function(data,id,type){
     return htmlString;
 }
 
-var createSearchBarInDOM = function(id){
-    var htmlString = `<input type = "text" id=${id} name=${id} ></input>`
-    return htmlString;
-}
+// var createSearchBarInDOM = function(id){
+//     var htmlString = `<input type = "text" id=${id} name=${id} ></input>`
+//     return htmlString;
+// }
 
-$(document).ready(function(){
+// $(document).ready(function(){
     
     
     
     
 
-})
+// })
 
 
 

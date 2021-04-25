@@ -19,7 +19,10 @@
                         <% if( ColumnName  == null || ColumnValues == null ){ %>
                             <h5>Showing all values</h5>
                         <% } else {%>
-                        <h5>Values for Column = <%=ColumnName%>, Values = <%=ColumnValues%> </h5>
+                        <h5>Values for Column = <%=ColumnName%>, Values Entered = <%=ColumnValues%> </h5>
+                        <% } %>
+                        <% if(valuesNotPresent.length) {%>
+                         <h5 >Entries not found for = <span style = "color: crimson;"> <%= valuesNotPresent %> </span></h5>   
                         <% } %>
                     </span>
 

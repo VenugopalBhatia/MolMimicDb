@@ -16,7 +16,7 @@ module.exports.displayTables = function(req,res){
     let queryRaw = ""
     if(req.body.searchByColumn == null || req.body.tableColumns == null){
         queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
-        query_ = `SELECT a.count , c.* from (SELECT DISTINCT * from ${req.body.pathogenSelection} LIMIT 2000) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
+        query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 2000) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
     }else{
         var sbc = JSON.stringify(req.body.searchByColumn)
         sbc = sbc.replace("[","")
@@ -24,8 +24,8 @@ module.exports.displayTables = function(req,res){
         sbc = sbc.trim()
         // console.log("***** sbc *****",sbc)
         
-        queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc}) `
-        query_ = `SELECT a.count, c.* from (${queryRaw}LIMIT 2000) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
+        queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
+        query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 2000) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
         // console.log("***** Query *****",query_)
     }
     
@@ -44,15 +44,19 @@ module.exports.displayTables = function(req,res){
                     var columnNames = Object.keys(rows[0]);
                     var tableLength = rows[0].count
                     columnNames.splice(0,1)
-                    
-                    // console.log(columnNames)
-                    queryResult = query_;
+                    let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
+                    // console.log(allFieldvals)
+                    let allFieldValuesSet = new Set(allFieldvals)
+                    let sbcSet = new Set(req.body.searchByColumn)
+                    let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x))
+                    queryResult = queryRaw;
                     // console.log(queryResult);
                     return res.render('QueryPage',{
                     rows:rows,
                     columns : columnNames,
                     ColumnName: req.body.tableColumns,
                     ColumnValues:sbc,
+                    valuesNotPresent:valuesNotPresent,
                     TableLength:tableLength
                     })
 
@@ -126,16 +130,11 @@ module.exports.getColumnValues = function(req,res){
             }
         }else{
             
-            let queryRes = []
-            for(let i of rows){
-                queryRes.push(i);
-            }
-            // let queryColumns = JSON.parse(JSON.stringify(columns));
-            // console.log(queryColumns)
+            
             if(req.xhr){
                 return res.status(200).json({
                     message: "Columns",
-                    data: queryRes
+                    data: rows
 
                 })
             }
