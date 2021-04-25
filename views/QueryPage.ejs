@@ -11,20 +11,28 @@
                 <!-- Add condition to keep table hidden if empty set -->
             
             <% if(rows.length!=0){ %>
-                <div>
-                    <span>
-                        <h5>Showing <%= rows.length %> of <%= TableLength %> records</h5>
-                    </span>
-                    <span>
-                        <% if( ColumnName  == null || ColumnValues == null ){ %>
-                            <h5>Showing all values</h5>
-                        <% } else {%>
-                        <h5>Values for Column = <%=ColumnName%>, Values Entered = <%=ColumnValues%> </h5>
-                        <% } %>
-                        <% if(valuesNotPresent.length) {%>
-                         <h5 >Entries not found for = <span style = "color: crimson;"> <%= valuesNotPresent %> </span></h5>   
-                        <% } %>
-                    </span>
+                <div id = "dataInfo">
+                    <div id = "info">
+                        <span>
+                            <h5>Showing <%= rows.length %> of <%= TableLength %> records</h5>
+                        </span>
+                        <span>
+                            <% if( ColumnName  == null || ColumnValues == null ){ %>
+                                <h5>Showing all values</h5>
+                            <% } else {%>
+                            <h5>Values for Column = <%=ColumnName%>, Values Entered = <%=ColumnValues%> </h5>
+                            <% } %>
+                            <% if(valuesNotPresent.length) {%>
+                             <h5 >Entries not found for = <span style = "color: crimson;"> <%= valuesNotPresent %> </span></h5>   
+                            <% } %>
+                        </span>
+                    </div>
+                    
+                    <div id = "DownloadQueryData">
+                        <a href=""><i class="fas fa-file-excel" id = "getCSV"></i></a>
+                        
+
+                    </div>
 
                 </div>
                 <div>
@@ -66,6 +74,7 @@
 
         </div>
 
+        <script src="https://kit.fontawesome.com/649bd7dfb2.js" crossorigin="anonymous"></script>
         <script type = "text/javascript" src = "/js/sidePanel.js"></script>
 
         

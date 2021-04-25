@@ -70,9 +70,37 @@
     border: none;
     right:0;
     transition: 0.5s;
-  }
+}
   
-  .openbtn:hover {
+.openbtn:hover {
     background-color: #444;
     position: fixed;
-  }
+}
+
+#dataInfo{
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+}
+
+#DownloadQueryData{
+
+    box-sizing: border-box;
+    width: 100px;
+    height: 50px;
+    margin: 15px;
+}
+
+#DownloadQueryData a{
+    text-decoration: none;
+    color: green;
+   
+}
+
+
+#getCSV{
+    box-sizing: border-box;
+    margin-top: 35px;
+    margin-left: 35px;
+    font-size: 30px;
+}

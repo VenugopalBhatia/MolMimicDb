@@ -46,9 +46,13 @@ module.exports.displayTables = function(req,res){
                     columnNames.splice(0,1)
                     let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
                     // console.log(allFieldvals)
+                    
                     let allFieldValuesSet = new Set(allFieldvals)
                     let sbcSet = new Set(req.body.searchByColumn)
                     let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x))
+                    if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
+                        valuesNotPresent = []
+                    }
                     queryResult = queryRaw;
                     // console.log(queryResult);
                     return res.render('QueryPage',{
@@ -143,8 +147,44 @@ module.exports.getColumnValues = function(req,res){
 }
 
 module.exports.queryCSVResult = function(req,res){
-    var parsedQuery = JSON.parse(JSON.stringify(queryResult));
-    console.log(parsedQuery);
+    if(queryResult.length){
+        db.query(queryResult,function(err,rows,fields){
+            if(err){
+                if(req.xhr){
+                    return res.status(500).json({
+                        message:err
+                    })
+                }
+                console.log("Error:",err)
+
+            }else{
+                try{
+                    
+                    if(req.xhr){
+                        if(rows.length!=0){
+                            return res.status(200).json({
+                                message: "The following data was returned by the database",
+                                data:rows
+                            })
+
+                        }else{
+                            return res.status(404).json({
+                                message: "There was a problem with the query, pls check"
+                            })
+                        }
+                        
+                    }
+
+                }
+                catch(ReturnDataErr){
+                    console.log("Error in returning data",ReturnDataErr)
+
+                }
+                
+                
+            }
+        })
+    }
 }
 
 // module.exports.queryResult = function(req,res){
