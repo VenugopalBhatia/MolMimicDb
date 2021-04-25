@@ -1,6 +1,12 @@
+
 .container{
     /* display:flex; */
     min-height: 70vh;
+    
+}
+
+#MainRes div span{
+    color: #0C526E;
 }
 
 #SideFilter{
@@ -13,18 +19,43 @@
     /* min-width: 200px; */
 }
 #ResultTable{
+    border-style:solid 1px;
+    margin: auto;
     width:100%;
+    font-size: 17px;
+    table-layout: fixed;
+    text-align: center;
+    color: #0C526E;
+    border-collapse: collapse;
 }
-#ResultTable th{
-    color: rgb(226, 226, 226);
+
+#ResultTable td{
+    word-wrap:break-word;
+    padding: 5px;
+    border: solid #0C526E;
+    
 }
+
+
 #ResultTable tr:nth-child(even){
-    background-color: rgb(81, 123, 160);
+    background-color: #D3E3FC;
 
 }
 #ResultTable tr:nth-child(odd){
-    background-color: rgb(69, 103, 133);
+    background-color: #123c69c4;
+    color: #b1a9a5;
 
+}
+
+#ResultTable th{
+   
+    word-wrap:break-word;
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #FB9902;
+    color: rgb(109, 104, 104);
+    border: solid #0C526E;
 }
 
 

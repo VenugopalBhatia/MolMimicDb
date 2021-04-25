@@ -9,11 +9,11 @@
             <div id = "MainRes" >
             
                 <!-- Add condition to keep table hidden if empty set -->
-            <% var minValue = Math.min(2000,rows.length) %>
-            <% if(minValue!=0){ %>
+            
+            <% if(rows.length!=0){ %>
                 <div>
                     <span>
-                        <h5>Showing <%= minValue %> of <%= rows.length %> records</h5>
+                        <h5>Showing <%= rows.length %> of <%= TableLength %> records</h5>
                     </span>
                     <span>
                         <% if( ColumnName  == null || ColumnValues == null ){ %>
@@ -36,11 +36,11 @@
                            <% } %>
                         </tr>
             
-                        <% for(let i = 0; i<minValue ; i++){ %>
+                        <% for(let i = 0; i<rows.length ; i++){ %>
                             <tr>
-                                <% for(value of Object.values(rows[i])){ %>
+                                <% for(column of columns){ %>
                                     <td>
-                                        <%= value%>
+                                        <%= rows[i][column]%>
                                     </td>
             
                                 <% } %>

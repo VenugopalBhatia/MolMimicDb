@@ -73,9 +73,32 @@ function searchByColumn(){
                 
                 
                 htmlData = createDropdownInDOM(rowVals,"searchByColumn","multiple")
+                // '<select id="searchByColumn" name="searchByColumn" style = "width: 100%"></select>'
+
                 // console.log("HTML Data dropdown",htmlData)  
                 $('.searchByColumn').html(htmlData);
-                $('#searchByColumn').select2(); 
+                // $('#searchByColumn').selectize()
+                $('#searchByColumn').select2({
+                    multiple: true,
+                    tags:true,
+                    data: rowVals,
+                    allowClear: false,
+                    tokenSeparators : [','," ",", ",";"],
+                    // createTag: function (params) {
+                    //     // Don't offset to create a tag if there is no @ symbol
+                    //     if (params.term in rowVals) {
+                    //       // Return null to disable tag creation
+                    //       return {
+                    //         id: params.term,
+                    //         text: params.term
+                    //       }
+                    //     }
+                    //     return null;
+                    
+                       
+                    //   }
+                });
+                
             },
             error: function(err){
                 console.log("Error: ",err);
@@ -104,6 +127,9 @@ var createSearchBarInDOM = function(id){
 }
 
 $(document).ready(function(){
+    
+    
+    
     
 
 })

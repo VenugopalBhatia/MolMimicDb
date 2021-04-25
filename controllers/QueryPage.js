@@ -13,8 +13,10 @@ module.exports.getQueryPageOnLoad = function(req,res){
 module.exports.displayTables = function(req,res){
     // console.log("****** Request body ******",req.body);
     let query_ = ""
+    let queryRaw = ""
     if(req.body.searchByColumn == null || req.body.tableColumns == null){
-        query_ = `SELECT distinct * from ${req.body.pathogenSelection}`
+        queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
+        query_ = `SELECT a.count , c.* from (SELECT DISTINCT * from ${req.body.pathogenSelection} LIMIT 2000) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
     }else{
         var sbc = JSON.stringify(req.body.searchByColumn)
         sbc = sbc.replace("[","")
@@ -22,11 +24,13 @@ module.exports.displayTables = function(req,res){
         sbc = sbc.trim()
         // console.log("***** sbc *****",sbc)
         
-        query_ = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc}) `
+        queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc}) `
+        query_ = `SELECT a.count, c.* from (${queryRaw}LIMIT 2000) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
         // console.log("***** Query *****",query_)
     }
     
     db.query(query_,function(err,rows,fields){
+        // console.log("*******ROWS",rows[0].count)
         if(err){
             console.log("Error",err);
             return res.render('QueryPage',{
@@ -38,13 +42,18 @@ module.exports.displayTables = function(req,res){
             try{
                 if(rows.length!=0){
                     var columnNames = Object.keys(rows[0]);
+                    var tableLength = rows[0].count
+                    columnNames.splice(0,1)
+                    
+                    // console.log(columnNames)
                     queryResult = query_;
                     // console.log(queryResult);
-                return res.render('QueryPage',{
+                    return res.render('QueryPage',{
                     rows:rows,
                     columns : columnNames,
                     ColumnName: req.body.tableColumns,
-                    ColumnValues:sbc
+                    ColumnValues:sbc,
+                    TableLength:tableLength
                     })
 
                 }else{
@@ -106,7 +115,7 @@ module.exports.getColumnValues = function(req,res){
     let pathogenTable = req.query.pathogenTable;
     let column = req.query.column;
     db.query(`SELECT DISTINCT ${column} FROM ${pathogenTable}`,function(err,rows,fields){
-        
+        // console.log("Fields",fields)
         if(err){
             console.log("Error",err);
             if(req.xhr){
