@@ -1,7 +1,7 @@
-const e = require('express');
 const express = require('express')
 const db = require('../models/mimicDbConnector');
-
+// import { Parser } from 'json2csv';
+var { Parser } = require('json2csv')
 var queryResult = [];
 module.exports.getQueryPageOnLoad = function(req,res){
     return res.render('QueryPage',{
@@ -136,6 +136,7 @@ module.exports.getColumnValues = function(req,res){
             
             
             if(req.xhr){
+    
                 return res.status(200).json({
                     message: "Columns",
                     data: rows
@@ -147,10 +148,12 @@ module.exports.getColumnValues = function(req,res){
 }
 
 module.exports.queryCSVResult = function(req,res){
+    console.log("**** get request")
     if(queryResult.length){
         db.query(queryResult,function(err,rows,fields){
             if(err){
                 if(req.xhr){
+                    console.log("error")
                     return res.status(500).json({
                         message:err
                     })
@@ -161,6 +164,7 @@ module.exports.queryCSVResult = function(req,res){
                 try{
                     
                     if(req.xhr){
+                        
                         if(rows.length!=0){
                             return res.status(200).json({
                                 message: "The following data was returned by the database",
@@ -168,12 +172,29 @@ module.exports.queryCSVResult = function(req,res){
                             })
 
                         }else{
+                            console.log("error")
                             return res.status(404).json({
                                 message: "There was a problem with the query, pls check"
                             })
                         }
                         
                     }
+
+                    const json2csv = new Parser()
+
+                    try{
+                        const csv = json2csv.parse(rows)
+                        console.log("parsed data")
+                        res.attachment('data.csv')
+                        res.status(200).send(csv)
+                    }
+                    catch(error){
+                        console.log('error:', error.message)
+                        res.status(500).send(error.message)
+                    }
+
+                    
+
 
                 }
                 catch(ReturnDataErr){
@@ -186,6 +207,17 @@ module.exports.queryCSVResult = function(req,res){
         })
     }
 }
+
+
+
+// export const downloadResource = (res, fileName, data) => {
+//     const json2csv = new Parser();
+//     const csv = json2csv.parse(data);
+//     res.header('Content-Type', 'text/csv');
+//     res.attachment(fileName);
+//     return res.send(csv);
+//   }
+
 
 // module.exports.queryResult = function(req,res){
 //     console.log(req.body);
