@@ -10,81 +10,167 @@ module.exports.getQueryPageOnLoad = function(req,res){
         message: "Welcome! get started by clicking the button on the right"
     })
 }
-module.exports.displayTables = function(req,res){
-    // console.log("****** Request body ******",req.body);
-    let query_ = ""
-    let queryRaw = ""
-    if(req.body.searchByColumn == null || req.body.tableColumns == null){
-        queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
-        query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
-    }else{
-        var sbc = JSON.stringify(req.body.searchByColumn)
-        sbc = sbc.replace("[","")
-        sbc = sbc.replace("]","")
-        sbc = sbc.trim()
-        // console.log("***** sbc *****",sbc)
-        
-        queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
-        query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 2000) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
-        // console.log("***** Query *****",query_)
-    }
-    
-    db.query(query_,function(err,rows,fields){
-        // console.log("*******ROWS",rows[0].count)
-        if(err){
-            console.log("Error",err);
-            return res.render('QueryPage',{
+
+
+module.exports.displayTables = async function(req,res){
+
+    var format = /[`!@#$%^&*+=;':"|,.<>?~]/;
+
+    if((!format.test(req.body.searchByColumn))&(!format.test(req.body.tableColumns))){
+        let query_ = ""
+        let queryRaw = ""
+        if(req.body.searchByColumn == null || req.body.tableColumns == null){
+            queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
+            query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
+        }else{
+            var sbc = JSON.stringify(req.body.searchByColumn);
+            sbc = sbc.replace("[","");
+            sbc = sbc.replace("]","");
+            sbc = sbc.trim()
+            // console.log("***** sbc *****",sbc)
+            
+            queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
+            query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
+            // console.log("***** Query *****",query_)
+        }
+
+        try{
+            var rows = await db.promise().query(query_)
+            console.log(query_)
+            rows = rows[0]
+            if(rows.length!=0){
+                var columnNames = Object.keys(rows[0]);
+                var tableLength = rows[0].count
+                columnNames.splice(0,1)
+                let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
+                // console.log(allFieldvals)
+                
+                let allFieldValuesSet = new Set(allFieldvals)
+                let sbcSet = new Set(req.body.searchByColumn)
+                let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x)) // Check for user entered values not in db
+                if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
+                    valuesNotPresent = []
+                }
+                queryResult = queryRaw;
+                // console.log(queryResult);
+                return res.render('QueryPage',{
+                rows:rows,
+                columns : columnNames,
+                ColumnName: req.body.tableColumns,
+                ColumnValues:sbc,
+                valuesNotPresent:valuesNotPresent,
+                TableLength:tableLength
+                })
+
+            }else{
+                return res.render('QueryPage',{
+                    rows:[],
+                    columns :[],
+                    message: "No results found, kindly check filter parameters"
+                })
+            }
+        }
+        catch(err){
+
+            res.render('QueryPage',{
                 rows:[],
                 columns :[],
                 message: "An error occurred in running query: " + err
             })
-        }else{
-            try{
-                if(rows.length!=0){
-                    var columnNames = Object.keys(rows[0]);
-                    var tableLength = rows[0].count
-                    columnNames.splice(0,1)
-                    let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
-                    // console.log(allFieldvals)
-                    
-                    let allFieldValuesSet = new Set(allFieldvals)
-                    let sbcSet = new Set(req.body.searchByColumn)
-                    let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x))
-                    if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
-                        valuesNotPresent = []
-                    }
-                    queryResult = queryRaw;
-                    // console.log(queryResult);
-                    return res.render('QueryPage',{
-                    rows:rows,
-                    columns : columnNames,
-                    ColumnName: req.body.tableColumns,
-                    ColumnValues:sbc,
-                    valuesNotPresent:valuesNotPresent,
-                    TableLength:tableLength
-                    })
 
-                }else{
-                    return res.render('QueryPage',{
-                        rows:[],
-                        columns :[],
-                        message: "No results found, kindly check filter parameters"
-                    })
-                }
-               
-            }catch(err){
-                res.render('QueryPage',{
-                    rows:[],
-                    columns :[],
-                    message: "An error occurred in running query: " + err
-                })
-            
-            }
         }
-        
-    });
+
+
+
+    }else{
+        console.log("Error! Possible Sql Injection!");
+        console.log("Column Values",req.body.searchByColumn)
+        console.log("Table values",req.body.tableColumns)
+        res.redirect('back');
+
+    }
+
     
-};
+
+}
+
+
+// ******* callback based displayTables
+// module.exports.displayTables = function(req,res){
+//     // console.log("****** Request body ******",req.body);
+//     let query_ = ""
+//     let queryRaw = ""
+//     if(req.body.searchByColumn == null || req.body.tableColumns == null){
+//         queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
+//         query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
+//     }else{
+//         var sbc = JSON.stringify(req.body.searchByColumn)
+//         sbc = sbc.replace("[","")
+//         sbc = sbc.replace("]","")
+//         sbc = sbc.trim()
+//         // console.log("***** sbc *****",sbc)
+        
+//         queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
+//         query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
+//         // console.log("***** Query *****",query_)
+//     }
+    
+//     db.query(query_,function(err,rows,fields){
+//         // console.log("*******ROWS",rows[0].count)
+//         if(err){
+//             console.log("Error",err);
+//             return res.render('QueryPage',{
+//                 rows:[],
+//                 columns :[],
+//                 message: "An error occurred in running query: " + err
+//             })
+//         }else{
+//             try{
+//                 if(rows.length!=0){
+//                     var columnNames = Object.keys(rows[0]);
+//                     var tableLength = rows[0].count
+//                     columnNames.splice(0,1)
+//                     let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
+//                     // console.log(allFieldvals)
+                    
+//                     let allFieldValuesSet = new Set(allFieldvals)
+//                     let sbcSet = new Set(req.body.searchByColumn)
+//                     let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x))
+//                     if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
+//                         valuesNotPresent = []
+//                     }
+//                     queryResult = queryRaw;
+//                     // console.log(queryResult);
+//                     return res.render('QueryPage',{
+//                     rows:rows,
+//                     columns : columnNames,
+//                     ColumnName: req.body.tableColumns,
+//                     ColumnValues:sbc,
+//                     valuesNotPresent:valuesNotPresent,
+//                     TableLength:tableLength
+//                     })
+
+//                 }else{
+//                     return res.render('QueryPage',{
+//                         rows:[],
+//                         columns :[],
+//                         message: "No results found, kindly check filter parameters"
+//                     })
+//                 }
+               
+//             }catch(err){
+//                 res.render('QueryPage',{
+//                     rows:[],
+//                     columns :[],
+//                     message: "An error occurred in running query: " + err
+//                 })
+            
+//             }
+//         }
+        
+//     });
+    
+// };
 
 module.exports.getColumnSelectionDropdown = function(req,res){
     let pathogenTable = req.query.pathogenTable;
@@ -152,15 +238,22 @@ module.exports.getColumnSelectionDropdown = function(req,res){
 module.exports.getColumnValues = async function(req,res){
     let pathogenTable = req.query.pathogenTable;
     let column = req.query.column;
+    var format = /[ `!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
     try{
-        const rows = await db.promise().execute(`SELECT DISTINCT ${column} FROM ${pathogenTable}`)
-        if(req.xhr){
-            
-            return res.status(200).json({
-                message: "Columns",
-                data: rows[0]
-        })
+        if((!format.test(pathogenTable))&(!format.test(column))){
+            const rows = await db.promise().execute(`SELECT DISTINCT ${column} FROM ${pathogenTable}`)
+            if(req.xhr){
+                
+                return res.status(200).json({
+                    message: "Columns",
+                    data: rows[0]
+            })
+            }
+
+        }else{
+            return res.send('back')
         }
+        
     }
     catch(err){
         console.log("*****Error",err)
