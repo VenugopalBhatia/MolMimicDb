@@ -75,7 +75,7 @@ function searchByColumn(){
             success: function(resData){
                 let rowVals = [];
                 let FieldVals = resData['data']
-                
+                console.log(resData)
                 rowVals = FieldVals.map(function(row){ return row[selectedVal] })
                 
                 // for(let i of resData['data']){

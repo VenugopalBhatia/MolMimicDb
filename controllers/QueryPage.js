@@ -16,7 +16,7 @@ module.exports.displayTables = function(req,res){
     let queryRaw = ""
     if(req.body.searchByColumn == null || req.body.tableColumns == null){
         queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
-        query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 2000) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
+        query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
     }else{
         var sbc = JSON.stringify(req.body.searchByColumn)
         sbc = sbc.replace("[","")
@@ -119,36 +119,66 @@ module.exports.getColumnSelectionDropdown = function(req,res){
 
 }
 
-module.exports.getColumnValues = function(req,res){
+// ********** Callback based getColumn Values
+
+// module.exports.getColumnValues = async function(req,res){
+//     let pathogenTable = req.query.pathogenTable;
+//     let column = req.query.column;
+//     db.query(`SELECT DISTINCT ${column} FROM ${pathogenTable}`,function(err,rows,fields){
+//         // console.log("Fields",fields)
+//         if(err){
+//             console.log("Error",err);
+//             if(req.xhr){
+//                 return res.status(500).json({
+//                     message: "error"
+
+//                 })
+//             }
+//         }else{
+            
+            
+//             if(req.xhr){
+    
+//                 return res.status(200).json({
+//                     message: "Columns",
+//                     data: rows
+
+//                 })
+//             }
+//         }
+//     })
+// }
+
+module.exports.getColumnValues = async function(req,res){
     let pathogenTable = req.query.pathogenTable;
     let column = req.query.column;
-    db.query(`SELECT DISTINCT ${column} FROM ${pathogenTable}`,function(err,rows,fields){
-        // console.log("Fields",fields)
-        if(err){
-            console.log("Error",err);
-            if(req.xhr){
-                return res.status(500).json({
-                    message: "error"
-
-                })
-            }
-        }else{
+    try{
+        const rows = await db.promise().execute(`SELECT DISTINCT ${column} FROM ${pathogenTable}`)
+        if(req.xhr){
             
-            
+            return res.status(200).json({
+                message: "Columns",
+                data: rows[0]
+        })
+        }
+    }
+    catch(err){
+        console.log("*****Error",err)
+        if(req.xhr){
             if(req.xhr){
-    
-                return res.status(200).json({
-                    message: "Columns",
-                    data: rows
+            return res.status(500).json({
+                message: "error"
 
-                })
+            })
             }
         }
-    })
+    }
+    
+
 }
 
 module.exports.queryCSVResult = function(req,res){
-    console.log("**** get request")
+    // console.log("**** get request")
     if(queryResult.length){
         db.query(queryResult,function(err,rows,fields){
             if(err){
@@ -184,7 +214,7 @@ module.exports.queryCSVResult = function(req,res){
 
                     try{
                         const csv = json2csv.parse(rows)
-                        console.log("parsed data")
+                        // console.log("parsed data")
                         res.attachment('data.csv')
                         res.status(200).send(csv)
                     }
