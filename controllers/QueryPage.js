@@ -27,23 +27,24 @@ module.exports.displayTables = async function(req,res){
             query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
         }else{
             var sbc = JSON.stringify(req.body.searchByColumn);
+            // sbc = '"' + sbc + '"'
             // var sbc = req.body.searchByColumn;
-            console.log("***** sbc *****",sbc)
+            // console.log("***** sbc *****",sbc)
             // sbc = sbc.toString()
-            // sbc = sbc.replace(/[(.*)]/,"");
-            sbc = sbc.replace("[","");
-            sbc = sbc.replace("]","");
+            sbc = sbc.replace(/^\[([\s\S]*)]$/,'$1');
+            // sbc = sbc.replace("^[","");
+            // sbc = sbc.replace("]$","");
             // sbc = sbc.trim()
-            console.log("***** sbc *****",sbc)
+            // console.log("***** sbc *****",sbc)
             
             queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
-            query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
+            query_ = `SELECT a.count, c.* from (${queryRaw}) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
             // console.log("***** Query *****",query_)
         }
 
         try{
             var rows = await db.promise().query(query_)
-            console.log(query_)
+            // console.log(query_)
             rows = rows[0]
             if(rows.length!=0){
                 var columnNames = Object.keys(rows[0]);
@@ -66,6 +67,7 @@ module.exports.displayTables = async function(req,res){
                 if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
                     valuesNotPresent = []
                 }
+                rows = rows.slice(0,500)
                 queryResult = queryRaw;
                 // console.log(req.body.tableColumns);
                 return res.render('QueryPage',{
