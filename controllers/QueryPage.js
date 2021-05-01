@@ -14,7 +14,7 @@ module.exports.getQueryPageOnLoad = function(req,res){
 
 module.exports.displayTables = async function(req,res){
 
-    var format = /[`!@#$%^&*+=;':"|,.<>?~]/;
+    var format = /[`!@#$%^&*+=;<>?~]/;
 
     if((!format.test(req.body.searchByColumn))&(!format.test(req.body.tableColumns))){
         let query_ = ""
@@ -24,8 +24,8 @@ module.exports.displayTables = async function(req,res){
             query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
         }else{
             var sbc = JSON.stringify(req.body.searchByColumn);
-            sbc = sbc.replace("[","");
-            sbc = sbc.replace("]","");
+            sbc = sbc.replace("[(.*)]","");
+            // sbc = sbc.replace("]","");
             sbc = sbc.trim()
             // console.log("***** sbc *****",sbc)
             
@@ -36,7 +36,7 @@ module.exports.displayTables = async function(req,res){
 
         try{
             var rows = await db.promise().query(query_)
-            console.log(query_)
+            // console.log(query_)
             rows = rows[0]
             if(rows.length!=0){
                 var columnNames = Object.keys(rows[0]);

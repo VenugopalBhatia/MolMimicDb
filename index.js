@@ -1,6 +1,6 @@
 const express = require('express');
 const port = 8000;
-
+const compression = require('compression');
 const app = express();
 const expressLayouts = require('express-ejs-layouts'); 
 
@@ -14,7 +14,7 @@ app.set('view engine','ejs');
 app.set('views','./views')
 
 app.use(express.urlencoded({extended:true}));
-
+app.use(compression());
 app.use('/',require('./routes'));
 
 
