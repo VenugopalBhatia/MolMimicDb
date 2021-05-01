@@ -23,6 +23,8 @@ var tableSelect = $('input[type=radio][name="domainMotifSelection"]').change(fun
             // var htmlData = '<select id="tableColumns" name="tableColumns" style = "width: 100%"></select>'
             // console.log(htmlData)
             $('#tableColumns').attr("visibility:true");
+            let htmlData = '<select id="tableColumns" name="tableColumns" style = "width: 100%"></select>'
+            $('.tableColumns').html(htmlData);
             $('#tableColumns').change(searchByColumn).change();
             let rowVals = resData['data']
             $("#tableColumns").select2({

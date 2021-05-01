@@ -3,6 +3,8 @@ const port = 8000;
 const compression = require('compression');
 const app = express();
 const expressLayouts = require('express-ejs-layouts'); 
+const cachingDb = require('./config/mongoose');
+const Cache = require('./models/cache');
 
 app.use(express.static('assets'));
 app.use(expressLayouts);
@@ -13,8 +15,9 @@ app.set('layout extractScripts',true);
 app.set('view engine','ejs');
 app.set('views','./views')
 
-app.use(express.urlencoded({extended:true}));
 app.use(compression());
+app.use(express.urlencoded({extended:true}));
+
 app.use('/',require('./routes'));
 
 

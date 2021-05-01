@@ -1,7 +1,10 @@
 const express = require('express')
 const db = require('../models/mimicDbConnector');
 // import { Parser } from 'json2csv';
-var { Parser } = require('json2csv')
+var { Parser } = require('json2csv');
+const Cache = require('../models/cache')
+
+
 var queryResult = [];
 module.exports.getQueryPageOnLoad = function(req,res){
     return res.render('QueryPage',{
@@ -24,10 +27,14 @@ module.exports.displayTables = async function(req,res){
             query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
         }else{
             var sbc = JSON.stringify(req.body.searchByColumn);
-            sbc = sbc.replace("[(.*)]","");
-            // sbc = sbc.replace("]","");
-            sbc = sbc.trim()
-            // console.log("***** sbc *****",sbc)
+            // var sbc = req.body.searchByColumn;
+            console.log("***** sbc *****",sbc)
+            // sbc = sbc.toString()
+            // sbc = sbc.replace(/[(.*)]/,"");
+            sbc = sbc.replace("[","");
+            sbc = sbc.replace("]","");
+            // sbc = sbc.trim()
+            console.log("***** sbc *****",sbc)
             
             queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
             query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
@@ -36,12 +43,20 @@ module.exports.displayTables = async function(req,res){
 
         try{
             var rows = await db.promise().query(query_)
-            // console.log(query_)
+            console.log(query_)
             rows = rows[0]
             if(rows.length!=0){
                 var columnNames = Object.keys(rows[0]);
+                var columnDisplay = []
+                for(let i in columnNames){
+                    // console.log(i)
+                    columnDisplay[i] = columnNames[i].replace(/_/g," ")
+                    // console.log("after replacement",i)
+                }
+                // console.log(columnNames)
                 var tableLength = rows[0].count
                 columnNames.splice(0,1)
+                columnDisplay.splice(0,1)
                 let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
                 // console.log(allFieldvals)
                 
@@ -52,10 +67,11 @@ module.exports.displayTables = async function(req,res){
                     valuesNotPresent = []
                 }
                 queryResult = queryRaw;
-                // console.log(queryResult);
+                // console.log(req.body.tableColumns);
                 return res.render('QueryPage',{
                 rows:rows,
                 columns : columnNames,
+                columnsForDisplay: columnDisplay,
                 ColumnName: req.body.tableColumns,
                 ColumnValues:sbc,
                 valuesNotPresent:valuesNotPresent,
@@ -241,7 +257,29 @@ module.exports.getColumnValues = async function(req,res){
     var format = /[ `!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
     try{
         if((!format.test(pathogenTable))&(!format.test(column))){
-            const rows = await db.promise().execute(`SELECT DISTINCT ${column} FROM ${pathogenTable}`)
+
+            var query_ = `SELECT DISTINCT ${column} FROM ${pathogenTable}`
+
+            var rows = await Cache.findOne({query: query_})
+            if(rows!=null){
+                rows = rows.content
+            }
+            else{
+                rows = await db.promise().execute(query_);
+                await Cache.create({
+                    query: query_,
+                    content: rows
+                });
+                // console.log("query Rows",rows)
+            }
+
+
+
+
+            
+
+            
+
             if(req.xhr){
                 
                 return res.status(200).json({
