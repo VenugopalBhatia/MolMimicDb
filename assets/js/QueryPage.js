@@ -75,10 +75,10 @@ function searchByColumn(){
             },
             async:false,
             success: function(resData){
-                let rowVals = [];
+                // let rowVals = [];
                 let FieldVals = resData['data']
-                console.log(resData)
-                rowVals = FieldVals.map(function(row){ return row[selectedVal] })
+                // console.log(FieldVals)
+                // rowVals = FieldVals.map(function(row){ return row[selectedVal] })
                 
                 // for(let i of resData['data']){
                 //     for(let key in i){
@@ -97,7 +97,7 @@ function searchByColumn(){
                 $('#searchByColumn').select2({
                     multiple: true,
                     tags:true,
-                    data: rowVals,
+                    data: FieldVals,
                     allowClear: false,
                     tokenSeparators : [','," ",", ",";"],
                     // createTag: function (params) {

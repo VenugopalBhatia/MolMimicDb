@@ -268,6 +268,8 @@ module.exports.getColumnValues = async function(req,res){
             }
             else{
                 rows = await db.promise().execute(query_);
+                // console.log(rows)
+                rows = rows[0].map(function(row){ return row[column] })
                 await Cache.create({
                     query: query_,
                     content: rows
@@ -286,7 +288,7 @@ module.exports.getColumnValues = async function(req,res){
                 
                 return res.status(200).json({
                     message: "Columns",
-                    data: rows[0]
+                    data: rows
             })
             }
 
