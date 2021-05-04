@@ -15,6 +15,9 @@ header {
     color: rgb(246, 246, 250);
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
+  header a {
+    text-decoration: none;
+  }
   
   header ul {
     margin: 0;

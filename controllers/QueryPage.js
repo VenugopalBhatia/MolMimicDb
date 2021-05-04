@@ -19,7 +19,7 @@ module.exports.displayTables = async function(req,res){
 
     var format = /[`!@#$%^&*+=;<>?~]/;
 
-    if((!format.test(req.body.searchByColumn))&(!format.test(req.body.tableColumns))){
+    if((!format.test(req.body.searchByColumn))&(!format.test(req.body.tableColumns)&(!format.test(req.body.pathogenSelection)))){
         let query_ = ""
         let queryRaw = ""
         if(req.body.searchByColumn == null || req.body.tableColumns == null){

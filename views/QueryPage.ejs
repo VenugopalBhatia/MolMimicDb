@@ -51,7 +51,15 @@
                             <tr>
                                 <% for(column of columns){ %>
                                     <td>
-                                        <%= rows[i][column]%>
+                                        <% if(column == "Matched_Domain_PSSMID" ){ %>
+
+                                            <a href="https://www.ncbi.nlm.nih.gov/Structure/cdd/<%= rows[i][column] %>"><%= rows[i][column]%></a>
+                                        <%} else if(column == "Matched_MotifID" ){ %>
+
+                                            <a href="https://prosite.expasy.org/<%= rows[i][column] %>"><%= rows[i][column]%></a>
+                                        <%} else {%>
+                                            <%= rows[i][column]%>
+                                        <%}%>
                                     </td>
             
                                 <% } %>
