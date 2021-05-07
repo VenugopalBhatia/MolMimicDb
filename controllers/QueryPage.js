@@ -270,10 +270,11 @@ module.exports.getColumnValues = async function(req,res){
                 rows = await db.promise().execute(query_);
                 // console.log(rows)
                 rows = rows[0].map(function(row){ return row[column] })
-                await Cache.create({
+                let queryDoc = await Cache.create({
                     query: query_,
                     content: rows
                 });
+                // await queryDoc.save()
                 // console.log("query Rows",rows)
             }
 
