@@ -57,6 +57,15 @@
                                         <%} else if(column == "Matched_MotifID" ){ %>
 
                                             <a href="https://prosite.expasy.org/<%= rows[i][column] %>"><%= rows[i][column]%></a>
+                                        <%} else if(column == "Pathogen_ProteinID" ){ %>
+
+                                            <a href="https://www.uniprot.org/uniprot/<%= rows[i][column] %>"><%= rows[i][column]%></a>
+                                        <%} else if(column == "Host_ProteinID" ){ %>
+
+                                            <a href="https://www.uniprot.org/uniprot/<%= rows[i][column] %>"><%= rows[i][column]%></a>
+                                        <%} else if(column == "Host_Interactor_ProteinID" ){ %>
+
+                                            <a href="https://www.uniprot.org/uniprot/<%= rows[i][column] %>"><%= rows[i][column]%></a>
                                         <%} else {%>
                                             <%= rows[i][column]%>
                                         <%}%>

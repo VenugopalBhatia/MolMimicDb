@@ -20,13 +20,13 @@
 }
 #ResultTable{
     border-style:solid 1px;
-    margin: auto;
     width:100%;
     font-size: 17px;
     table-layout: fixed;
     text-align: center;
     color: #0C526E;
     border-collapse: collapse;
+    margin-bottom: 10px;
 }
 
 #ResultTable td{
@@ -35,6 +35,11 @@
     border: solid #0C526E;
     
 }
+
+#ResultTable td a{
+    color: #0C526E;
+}
+
 
 
 #ResultTable tr:nth-child(even){
@@ -47,6 +52,10 @@
 
 }
 
+#ResultTable tr:nth-child(odd) a{
+    color: #b1a9a5;
+}
+
 #ResultTable th{
    
     word-wrap:break-word;
@@ -56,6 +65,7 @@
     background-color: #FB9902;
     color: rgb(109, 104, 104);
     border: solid #0C526E;
+    
 }
 
 
