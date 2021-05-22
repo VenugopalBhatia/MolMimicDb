@@ -8,7 +8,7 @@ var domainMotifSelect = $('input[type=radio][name="domainMotifSelection"]').chan
 });
 
 
-var tableSelect = $('input[type=radio][name="domainMotifSelection"]').change(function(){
+var tableSelect = $('input[type=radio]').change(function(){
     console.log('change triggered')
     var pathogenTableSelected = $('input[name="pathogenSelection"]:checked').val()
     $.ajax({
@@ -43,6 +43,9 @@ var tableSelect = $('input[type=radio][name="domainMotifSelection"]').change(fun
 
 $('input[name=pathogenSelection').change(function(){
     // console.log("Changed Table selection")
+    if(!$('input[name="domainMotifSelection"]:checked').length){
+        $('#domain_radio').prop('checked',true)
+    }
     if($("#tableColumns").length){
         $('#tableColumns').val(null).trigger('change');
         

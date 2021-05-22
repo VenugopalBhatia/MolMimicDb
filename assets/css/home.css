@@ -55,8 +55,8 @@ h3{
     min-height: 460px;
     min-width: 200px;
     height:50vh;
-    width: 45%;
-    margin-right:10px;
+    width: 48vw;
+    margin-right:1vw;
     
     font-size: 15px;
     padding: 5px;
@@ -77,14 +77,19 @@ h3{
 /* schematic properties */
 .schematic{
     text-align: center;
+    min-height: 460px;
+    min-width: 200px;
+    height:50vh;
+    width: 48vw;
     background-color: rgb(245 246 247 / 69%);
-    height:460px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .schematic img{
     border: 1px solid #ddd;
-    height: 410px;
-    width: 700px;
+    height:auto;
+    width: 48vw;
+    /* min-height: 127px; */
+    min-width: 100px;
     /* border-radius: 10px; */
 }
 

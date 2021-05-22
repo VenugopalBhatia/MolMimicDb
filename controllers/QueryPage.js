@@ -27,18 +27,12 @@ module.exports.displayTables = async function(req,res){
             query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
         }else{
             var sbc = JSON.stringify(req.body.searchByColumn);
-            // sbc = '"' + sbc + '"'
-            // var sbc = req.body.searchByColumn;
-            // console.log("***** sbc *****",sbc)
-            // sbc = sbc.toString()
+           
             sbc = sbc.replace(/^\[([\s\S]*)]$/,'$1');
-            // sbc = sbc.replace("^[","");
-            // sbc = sbc.replace("]$","");
-            // sbc = sbc.trim()
-            // console.log("***** sbc *****",sbc)
-            
+             
             queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
-            query_ = `SELECT a.count, c.* from (${queryRaw}) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
+            query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
+            mongoQuery = `SELECT DISTINCT ${req.body.pathogenSelection} FROM ${req.body.pathogenSelection}`
             // console.log("***** Query *****",query_)
         }
 
@@ -58,17 +52,25 @@ module.exports.displayTables = async function(req,res){
                 var tableLength = rows[0].count
                 columnNames.splice(0,1)
                 columnDisplay.splice(0,1)
-                let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
+                // let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
                 // console.log(allFieldvals)
                 
-                let allFieldValuesSet = new Set(allFieldvals)
-                let sbcSet = new Set(req.body.searchByColumn)
-                let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x)) // Check for user entered values not in db
-                if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
-                    valuesNotPresent = []
+                // let allFieldValuesSet = new Set(allFieldvals)
+                let valuesNotPresent = []
+                if(req.body.searchByColumn != null && req.body.tableColumns != null){
+                    var allFieldValuesSet = await Cache.findOne({query: mongoQuery})
+                    if(allFieldValuesSet!=null){
+                        allFieldValuesSet = allFieldValuesSet.content
+                        let sbcSet = new Set(req.body.searchByColumn)
+                        let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x)) // Check for user entered values not in db
+                        if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
+                            valuesNotPresent = []
+                        }
+                    }
+                    
                 }
-                rows = rows.slice(0,500)
-                queryResult = queryRaw;
+                // rows = rows.slice(0,500)
+                queryResult = queryRaw + ' LIMIT 100000';
                 // console.log(req.body.tableColumns);
                 return res.render('QueryPage',{
                 rows:rows,
@@ -89,7 +91,7 @@ module.exports.displayTables = async function(req,res){
             }
         }
         catch(err){
-
+            // console.log(err.stack);
             res.render('QueryPage',{
                 rows:[],
                 columns :[],
@@ -325,7 +327,7 @@ module.exports.queryCSVResult = function(req,res){
                     })
                 }
                 console.log("Error:",err)
-
+                console.log(queryResult)
             }else{
                 try{
                     

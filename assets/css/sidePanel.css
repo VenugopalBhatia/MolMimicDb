@@ -1,5 +1,5 @@
 .sidepanel {
-    height: 600px; /* Specify a height */
+    height: 100vh; /* Specify a height */
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
@@ -15,7 +15,7 @@
   .sidepanel fieldset{
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 21px;
+    font-size: 18px;
     color: #2b2b2c;
     display: block;
     border: none;
@@ -33,11 +33,11 @@
   /* Position and style the close button (top right corner) */
   .sidepanel .closebtn {
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 25px;
     color:#d8d0d0;
     text-decoration: none;
-    font-size: 36px;
+    font-size: 25px;
     margin-left: 50px;
   }
 
