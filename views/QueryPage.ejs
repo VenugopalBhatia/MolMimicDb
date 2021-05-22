@@ -51,19 +51,19 @@
                             <tr>
                                 <% for(column of columns){ %>
                                     <td>
-                                        <% if(column == "Matched_Domain_PSSMID" ){ %>
+                                        <% if(column == "Matched_Domain_PSSM_ID" ){ %>
 
                                             <a href="https://www.ncbi.nlm.nih.gov/Structure/cdd/<%= rows[i][column] %>"><%= rows[i][column]%></a>
-                                        <%} else if(column == "Matched_MotifID" ){ %>
+                                        <%} else if(column == "Matched_Motif_ID" ){ %>
 
                                             <a href="https://prosite.expasy.org/<%= rows[i][column] %>"><%= rows[i][column]%></a>
-                                        <%} else if(column == "Pathogen_ProteinID" ){ %>
+                                        <%} else if(column == "Pathogen_Protein_ID" ){ %>
 
                                             <a href="https://www.uniprot.org/uniprot/<%= rows[i][column] %>"><%= rows[i][column]%></a>
-                                        <%} else if(column == "Host_ProteinID" ){ %>
+                                        <%} else if(column == "Host_Protein_ID" ){ %>
 
                                             <a href="https://www.uniprot.org/uniprot/<%= rows[i][column] %>"><%= rows[i][column]%></a>
-                                        <%} else if(column == "Host_Interactor_ProteinID" ){ %>
+                                        <%} else if(column == "Host_Interactor_Protein_ID" ){ %>
 
                                             <a href="https://www.uniprot.org/uniprot/<%= rows[i][column] %>"><%= rows[i][column]%></a>
                                         <%} else {%>
