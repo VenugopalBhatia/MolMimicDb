@@ -70,7 +70,7 @@ module.exports.displayTables = async function(req,res){
                     
                 }
                 // rows = rows.slice(0,500)
-                queryResult = queryRaw + ' LIMIT 100000';
+                queryResult = queryRaw;
                 // console.log(req.body.tableColumns);
                 return res.render('QueryPage',{
                 rows:rows,
