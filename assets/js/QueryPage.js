@@ -12,6 +12,7 @@ var tableSelect = $('input[type=radio]').change(function(){
     console.log('change triggered')
     $('#tableColumns').attr("visibility:true");
     $("#tableColumns").select2();
+    $('#tableColumns').change(searchByColumn).change();
     $("#tableColumns").val(null).trigger('change');
 })
     
