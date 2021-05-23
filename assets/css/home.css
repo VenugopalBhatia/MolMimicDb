@@ -53,25 +53,31 @@ h3{
 .about{
     box-sizing: border-box;
     min-height: 460px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    /* flex-wrap: wrap; */
     min-width: 200px;
-    height:50vh;
+    height: 50vh;
     width: 48vw;
-    margin-right:1vw;
-    
-    font-size: 15px;
-    padding: 5px;
+    margin-right: 1vw;
+    font-size: 75%;
+    padding: 0.5%;
     background-color: rgb(245 246 247 / 69%);
-    
-    
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
 .about p{
     box-sizing: border-box;
+    height: 33%;
+    /* align-content: center; */
+    /* justify-content: center; */
     background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 2%;
+    border-radius: 1%;
+    /* font-size: 1vw; */
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
 /* schematic properties */
