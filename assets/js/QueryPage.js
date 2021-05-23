@@ -10,36 +10,11 @@ var domainMotifSelect = $('input[type=radio][name="domainMotifSelection"]').chan
 
 var tableSelect = $('input[type=radio]').change(function(){
     console.log('change triggered')
-    var pathogenTableSelected = $('input[name="pathogenSelection"]:checked').val()
-    $.ajax({
-        type:'get',
-        url: 'query/get-dropdown/',
-        data:{
-            pathogenTable:pathogenTableSelected
-        },
-        async:false,
-        success: function(resData){
-            // var htmlData = createDropdownInDOM(resData["data"],"tableColumns","");
-            // var htmlData = '<select id="tableColumns" name="tableColumns" style = "width: 100%"></select>'
-            // console.log(htmlData)
-            $('#tableColumns').attr("visibility:true");
-            let htmlData = '<select id="tableColumns" name="tableColumns" style = "width: 100%"></select>'
-            $('.tableColumns').html(htmlData);
-            $('#tableColumns').change(searchByColumn).change();
-            let rowVals = resData['data']
-            $("#tableColumns").select2({
-                data: rowVals
-            });
-            $("#tableColumns").val(null).trigger('change');
-
-
-
-        }
-
-    })
-    
-    
+    $('#tableColumns').attr("visibility:true");
+    $("#tableColumns").select2();
+    $("#tableColumns").val(null).trigger('change');
 })
+    
 
 $('input[name=pathogenSelection').change(function(){
     // console.log("Changed Table selection")
