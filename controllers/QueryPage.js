@@ -4,7 +4,7 @@ const db = require('../models/mimicDbConnector');
 var { Parser } = require('json2csv');
 const Cache = require('../models/cache')
 
-var approvedColumns = new Set('Pathogen_Protein_ID','Host_Protein_ID')
+var approvedColumns = new Set(['Pathogen_Protein_ID','Host_Protein_ID'])
 
 var queryResult = [];
 module.exports.getQueryPageOnLoad = function(req,res){
@@ -23,7 +23,9 @@ module.exports.displayTables = async function(req,res){
     if((!format.test(req.body.searchByColumn))&(!format.test(req.body.tableColumns)&(!format.test(req.body.pathogenSelection)))){
         let query_ = ""
         let queryRaw = ""
-        if(req.body.searchByColumn == null || req.body.tableColumns == null||approvedColumns.has(req.body.tableColumns) == false){
+        console.log(req.body.tableColumns)
+        console.log("Approved Columns:",approvedColumns.has(req.body.tableColumns))
+        if(req.body.searchByColumn == null || req.body.tableColumns == null||!approvedColumns.has(req.body.tableColumns)){
             return res.render('QueryPage',{
                 rows:[],
                 columns :[],
