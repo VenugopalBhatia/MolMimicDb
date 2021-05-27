@@ -21,6 +21,7 @@
     "mysql2": "^2.2.5",
     "select2": "^4.1.0-rc.0",
     "selectize": "^0.12.6",
+    "superagent": "^6.1.0",
     "supervisor": "^0.12.0"
   }
 }

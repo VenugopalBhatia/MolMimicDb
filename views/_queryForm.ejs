@@ -6,7 +6,7 @@
     
     
     
-        <form action="/query" method = "POST" class = "side">
+        <form id = "sidepanelQueryForm" action="/query" method = "POST" class = "side">
             <fieldset id = "domainMotifSelection">
                 <input type="radio" name = "domainMotifSelection" id = "domain_radio" value = "domain">
                 <label for="domain">Domain</label>
@@ -37,10 +37,12 @@
                     <select id="searchByColumn" name="searchByColumn" style = "width: 100%; visibility: hidden"></select>
                 </span>
             </fieldset>
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            <input type="hidden" name="action" value="validate_captcha">
             <fieldset id = "fetchResults">
                 <input type="submit" id = "fetchData" value="Go">
             </fieldset>
-    
+
             
     
         </form>
@@ -53,6 +55,18 @@
 <script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6LcBXPUaAAAAAHNi4TArFifOwyJUq-lZ34LoX7jV"></script>
+<script>
+    grecaptcha.ready(function() {
+    // do request for recaptcha token
+    // response is promise with passed token
+        grecaptcha.execute('6LcBXPUaAAAAAHNi4TArFifOwyJUq-lZ34LoX7jV', {action:'validate_captcha'})
+                  .then(function(token) {
+            // add token value to form
+            document.getElementById('g-recaptcha-response').value = token;
+        });
+    })
+</script>
 <script type = "text/javascript" src = "/js/QueryPage.js"></script>
 
 

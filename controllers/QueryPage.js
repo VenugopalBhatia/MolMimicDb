@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const superagent = require('superagent');
 const db = require('../models/mimicDbConnector');
 // import { Parser } from 'json2csv';
 var { Parser } = require('json2csv');
@@ -18,17 +19,61 @@ module.exports.getQueryPageOnLoad = function(req,res){
 module.exports.displayTables = async function(req,res){
 
     var format = /[`!@#$%^&*+=;<>?~]/;
+    captcha_validation_token = true
 
-    if((!format.test(req.body.searchByColumn))&(!format.test(req.body.tableColumns)&(!format.test(req.body.pathogenSelection)))){
+    if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null)
+    {
+        captcha_validation_token = false
+    }
+
+    queryOptions = {
+        secret: "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2",
+        response: req.body['g-recaptcha-response'],
+        remoteip: req.connection.remoteAddress
+    }
+    const secretKey = "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2";
+
+    const verificationURL = "https://www.google.com/recaptcha/api/siteverify"
+
+    const response = await superagent.get(verificationURL).query(queryOptions)
+    console.log(response.body)
+
+    captcha_validation_token = response.body.success;
+
+    // console.log("captcha_validation_token",captcha_validation_token)
+
+    if(!captcha_validation_token){
+        console.log("captcha_validation_token",captcha_validation_token)
+        return res.render('QueryPage',{
+            rows:[],
+            columns :[],
+            message: "request blocked! possible bot detected"
+        })
+    }
+    
+    try{
+        if((format.test(req.body.searchByColumn))||(format.test(req.body.tableColumns)||(format.test(req.body.pathogenSelection)))){
+            throw Error('Possible sql injection detected')
+        }
         let query_ = ""
         let queryRaw = ""
         if(req.body.searchByColumn == null || req.body.tableColumns == null){
-            queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
-            query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
+            return res.render('QueryPage',{
+                rows:[],
+                columns :[],
+                message: "Kindly add filter parameters"
+            })
+
+            // queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
+            // query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
         }else{
             var sbc = JSON.stringify(req.body.searchByColumn);
            
             sbc = sbc.replace(/^\[([\s\S]*)]$/,'$1');
+
+            if(sbc.length>10){
+                throw Error('number of values entered greater than 10')
+            }
              
             queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
             query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
@@ -89,8 +134,7 @@ module.exports.displayTables = async function(req,res){
                     message: "No results found, kindly check filter parameters"
                 })
             }
-        }
-        catch(err){
+        }catch(err){
             // console.log(err.stack);
             res.render('QueryPage',{
                 rows:[],
@@ -102,11 +146,15 @@ module.exports.displayTables = async function(req,res){
 
 
 
-    }else{
-        console.log("Error! Possible Sql Injection!");
+    }catch(err){
+        console.log(err);
         console.log("Column Values",req.body.searchByColumn)
         console.log("Table values",req.body.tableColumns)
-        res.redirect('back');
+        res.render('QueryPage',{
+            rows:[],
+            columns :[],
+            message: "An error occurred in running query: " + err
+        })
 
     }
 
