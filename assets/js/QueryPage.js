@@ -103,6 +103,7 @@ function searchByColumn(){
                     data: FieldVals,
                     allowClear: false,
                     tokenSeparators : [','," ",", ",";"],
+                    maximumSelectionLength:10
                     // createTag: function (params) {
                     //     // Don't offset to create a tag if there is no @ symbol
                     //     if (params.term in rowVals) {
