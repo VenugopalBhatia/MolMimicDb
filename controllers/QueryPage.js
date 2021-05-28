@@ -20,13 +20,17 @@ module.exports.getQueryPageOnLoad = function(req,res){
 var validateCaptcha =  async function(req,res){
 
     let captcha_validation_token = true
+    // console.log("Request Body",req.body)
     if(req.session.captcha != req.body['captcha-val']){
+        // console.log(req.session.captcha)
+        // console.log(req.body['captcha-val'])
         captcha_validation_token =  false
     }else if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null){
+        // console.log("request body problem")
         captcha_validation_token = false
     }else{
 
-        queryOptions = {
+        var queryOptions = {
             secret: "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2",
             response: req.body['g-recaptcha-response'],
             remoteip: req.connection.remoteAddress

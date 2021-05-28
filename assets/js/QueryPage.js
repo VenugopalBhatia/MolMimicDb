@@ -152,7 +152,7 @@ $('#refresh-captcha').on('click',function(event){
         type:'get',
         url:'/Captcha.jpg',
         success:function(){
-            $('#captcha>img').attr("src",'/Captcha.jpg')
+            $('#captcha>div>img').attr("src",'/Captcha.jpg')
         }
     })
 })

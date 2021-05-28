@@ -37,12 +37,17 @@
                     <select id="searchByColumn" name="searchByColumn" style = "width: 100%; visibility: hidden"></select>
                 </span>
             </fieldset>
-            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
-            <input type="hidden" name="action" value="validate_captcha">
+            
             <fieldset id= "captcha">
-                <img name = "captcha" src="/Captcha.jpg" alt="">
-                <button id = "refresh-captcha" >refresh</button>
-                <input type="text" name = "captcha-val" placeholder = "Kindly enter values">
+                <div>
+                    <img name = "captcha" src="/Captcha.jpg" alt="">
+                </div>
+                <div>
+                    <button id = "refresh-captcha" >refresh</button>
+                    <input type="text" name = "captcha-val" placeholder = "Kindly enter values">
+                </div>
+                
+                
             </fieldset>
             
             <fieldset id = "fetchResults">
@@ -65,15 +70,35 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js?render=6LcBXPUaAAAAAHNi4TArFifOwyJUq-lZ34LoX7jV"></script>
 <script>
-    grecaptcha.ready(function() {
-    // do request for recaptcha token
-    // response is promise with passed token
+
+    $('#sidepanelQueryForm').submit(function(event){
+        event.preventDefault();
+        grecaptcha.ready(function() {
+        // do request for recaptcha token
+        // response is promise with passed token
         grecaptcha.execute('6LcBXPUaAAAAAHNi4TArFifOwyJUq-lZ34LoX7jV', {action:'validate_captcha'})
-                  .then(function(token) {
+        .then(function(token) {
             // add token value to form
-            document.getElementById('g-recaptcha-response').value = token;
+            
+            $('#sidepanelQueryForm').prepend('<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value = "' + token + '">')
+            $('#sidepanelQueryForm').prepend('<input type="hidden" name="action" value="query-form">')
+            $('#sidepanelQueryForm').off('submit').submit()
+            // document.getElementById('g-recaptcha-response').value = token;
         });
     })
+
+    })
+    
+
+    // setInterval(function () {
+    //     grecaptcha.execute('6LcBXPUaAAAAAHNi4TArFifOwyJUq-lZ34LoX7jV', {action:'validate_captcha'})
+    //               .then(function(token) {
+    //         // add token value to form
+    //         document.getElementById('g-recaptcha-response').value = token;
+    //     });
+
+    // },90*1000)
+
 </script>
 <script type = "text/javascript" src = "/js/QueryPage.js"></script>
 

@@ -27,7 +27,7 @@
   
   /* When you mouse over the navigation links, change their color */
   .sidepanel input:hover {
-    color: #f1f1f1;
+    color: #807b7b;
   }
   
   /* Position and style the close button (top right corner) */
@@ -41,11 +41,22 @@
     margin-left: 50px;
   }
 
-
+/* Styling Captcha */
   #fetchData{
     height:25px;
     width:50px;
     font-size: 16px;
+  }
+
+  #captcha div{
+    width:270px;
+  }
+
+  #captcha input{
+    width:188px;
+  }
+  #captcha button{
+    height:21px;
   }
 
   
