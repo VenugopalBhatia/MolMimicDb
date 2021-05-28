@@ -19,7 +19,7 @@ app.use(
         resave:false,
         saveUninitialized:true,
         cookie:{
-            maxAge:2*60*1000
+            maxAge:10*60*1000
         },
         store: MongoStore.create({
             mongoUrl:'mongodb://localhost/cachingdb',

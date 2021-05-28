@@ -1,3 +1,5 @@
+
+
 var domainMotifSelect = $('input[type=radio][name="domainMotifSelection"]').change(function(){
     var domainMotifSelected = $('input[name="domainMotifSelection"]:checked').val()
     $('#bacteria_table').prop('checked',true);
@@ -142,6 +144,19 @@ var createDropdownInDOM  = function(data,id,type){
     htmlString+="</select>"
     return htmlString;
 }
+
+$('#refresh-captcha').on('click',function(event){
+    event.preventDefault();
+    console.log('button clicked')
+    $.ajax({
+        type:'get',
+        url:'/Captcha.jpg',
+        success:function(){
+            $('#captcha>img').attr("src",'/Captcha.jpg')
+        }
+    })
+})
+
 
 
 // function downloadData(){

@@ -8,6 +8,7 @@ const Cache = require('../models/cache')
 
 
 var queryResult = [];
+var query_result_count = 0;
 module.exports.getQueryPageOnLoad = function(req,res){
     return res.render('QueryPage',{
         rows:[],
@@ -16,14 +17,10 @@ module.exports.getQueryPageOnLoad = function(req,res){
     })
 }
 
+var validateCaptcha =  async function(req,res){
 
-module.exports.displayTables = async function(req,res){
-
-    var format = /[`!@#$%^&*+=;<>?~]/;
-    captcha_validation_token = true
+    let captcha_validation_token = true
     if(req.session.captcha != req.body['captcha-val']){
-        console.log("Session captcha",req.session.captcha)
-        console.log("Capthcha-val",req.body['captcha-val'])
         captcha_validation_token =  false
     }else if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null){
         captcha_validation_token = false
@@ -46,9 +43,44 @@ module.exports.displayTables = async function(req,res){
 
     }
 
+    return captcha_validation_token
+
+}
+
+var checkSqlInjection = function(req,res){
+    var format = /[`!@#$%^&*+=;<>?~]/;
+    if((format.test(req.body.searchByColumn))||(format.test(req.body.tableColumns)||(format.test(req.body.pathogenSelection)))){
+        return false;
+    }
+    return true;
+}
+
+var get_values_absent = async function(req,mongoQuery){
+    let valuesNotPresent = []
+    
+    var allFieldValuesSet = await Cache.findOne({query: mongoQuery})
+    if(allFieldValuesSet!=null){
+        allFieldValuesSet = new Set(allFieldValuesSet.content)
+        let sbcSet = new Set(req.body.searchByColumn)
+        
+        valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x)) // Check for user entered values not in db
+        if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
+            valuesNotPresent = []
+        }
+    }
+
+    return valuesNotPresent
+}
+
+
+module.exports.displayTables = async function(req,res){
+
+    
+    
+    let captcha_validation_token = await validateCaptcha(req,res);
     
 
-    // console.log("captcha_validation_token",captcha_validation_token)
+    console.log("captcha_validation_token",captcha_validation_token)
 
     if(!captcha_validation_token){
         console.log("captcha_validation_token",captcha_validation_token)
@@ -60,9 +92,13 @@ module.exports.displayTables = async function(req,res){
     }
     
     try{
-        if((format.test(req.body.searchByColumn))||(format.test(req.body.tableColumns)||(format.test(req.body.pathogenSelection)))){
-            throw Error('Possible sql injection detected')
+
+        let check_sql_query = await checkSqlInjection(req,res);
+
+        if(!check_sql_query){
+            throw new Error('Possible sql injection detected')
         }
+        
         let query_ = ""
         let queryRaw = ""
         if(req.body.searchByColumn == null || req.body.tableColumns == null){
@@ -88,7 +124,7 @@ module.exports.displayTables = async function(req,res){
              
             queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
             query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
-            mongoQuery = `SELECT DISTINCT ${req.body.pathogenSelection} FROM ${req.body.pathogenSelection}`
+            var mongoQuery = `SELECT DISTINCT ${req.body.tableColumns} FROM ${req.body.pathogenSelection}`
             // console.log("***** Query *****",query_)
         }
 
@@ -110,23 +146,11 @@ module.exports.displayTables = async function(req,res){
                 columnDisplay.splice(0,1)
                 // let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
                 // console.log(allFieldvals)
-                
+                let valuesNotPresent =  await get_values_absent(req,mongoQuery);
                 // let allFieldValuesSet = new Set(allFieldvals)
-                let valuesNotPresent = []
-                if(req.body.searchByColumn != null && req.body.tableColumns != null){
-                    var allFieldValuesSet = await Cache.findOne({query: mongoQuery})
-                    if(allFieldValuesSet!=null){
-                        allFieldValuesSet = allFieldValuesSet.content
-                        let sbcSet = new Set(req.body.searchByColumn)
-                        let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x)) // Check for user entered values not in db
-                        if(valuesNotPresent.length && valuesNotPresent[0].length == 1){
-                            valuesNotPresent = []
-                        }
-                    }
-                    
-                }
                 // rows = rows.slice(0,500)
                 queryResult = queryRaw;
+                query_result_count = tableLength;
                 // console.log(req.body.tableColumns);
                 return res.render('QueryPage',{
                 rows:rows,
@@ -187,13 +211,11 @@ module.exports.displayTables = async function(req,res){
 //         sbc = sbc.replace("[","")
 //         sbc = sbc.replace("]","")
 //         sbc = sbc.trim()
-//         // console.log("***** sbc *****",sbc)
-        
+//         // console.log("***** sbc *****",sbc)      
 //         queryRaw = `SELECT distinct * from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})`
 //         query_ = `SELECT a.count, c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection} where ${req.body.tableColumns} IN (${sbc})) a`
 //         // console.log("***** Query *****",query_)
-//     }
-    
+//     }   
 //     db.query(query_,function(err,rows,fields){
 //         // console.log("*******ROWS",rows[0].count)
 //         if(err){
@@ -210,8 +232,7 @@ module.exports.displayTables = async function(req,res){
 //                     var tableLength = rows[0].count
 //                     columnNames.splice(0,1)
 //                     let allFieldvals = rows.map(function(row){ return row[req.body.tableColumns] })
-//                     // console.log(allFieldvals)
-                    
+//                     // console.log(allFieldvals)                  
 //                     let allFieldValuesSet = new Set(allFieldvals)
 //                     let sbcSet = new Set(req.body.searchByColumn)
 //                     let valuesNotPresent = [...sbcSet].filter(x=>!allFieldValuesSet.has(x))
@@ -242,13 +263,11 @@ module.exports.displayTables = async function(req,res){
 //                     rows:[],
 //                     columns :[],
 //                     message: "An error occurred in running query: " + err
-//                 })
-            
+//                 })           
 //             }
 //         }
         
-//     });
-    
+//     });   
 // };
 
 module.exports.getColumnSelectionDropdown = function(req,res){
@@ -299,9 +318,7 @@ module.exports.getColumnSelectionDropdown = function(req,res){
 
 //                 })
 //             }
-//         }else{
-            
-            
+//         }else{            
 //             if(req.xhr){
     
 //                 return res.status(200).json({
@@ -338,14 +355,6 @@ module.exports.getColumnValues = async function(req,res){
                 // await queryDoc.save()
                 // console.log("query Rows",rows)
             }
-
-
-
-
-            
-
-            
-
             if(req.xhr){
                 
                 return res.status(200).json({
@@ -353,7 +362,6 @@ module.exports.getColumnValues = async function(req,res){
                     data: rows
             })
             }
-
         }else{
             return res.send('back')
         }
@@ -419,10 +427,6 @@ module.exports.queryCSVResult = function(req,res){
                         console.log('error:', error.message)
                         res.status(500).send(error.message)
                     }
-
-                    
-
-
                 }
                 catch(ReturnDataErr){
                     console.log("Error in returning data",ReturnDataErr)
@@ -437,16 +441,3 @@ module.exports.queryCSVResult = function(req,res){
 
 
 
-// export const downloadResource = (res, fileName, data) => {
-//     const json2csv = new Parser();
-//     const csv = json2csv.parse(data);
-//     res.header('Content-Type', 'text/csv');
-//     res.attachment(fileName);
-//     return res.send(csv);
-//   }
-
-
-// module.exports.queryResult = function(req,res){
-//     console.log(req.body);
-//     return res.redirect('back');
-// }
