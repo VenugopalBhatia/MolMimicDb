@@ -6,6 +6,7 @@ var { Parser } = require('json2csv');
 const Cache = require('../models/cache')
 
 
+
 var queryResult = [];
 module.exports.getQueryPageOnLoad = function(req,res){
     return res.render('QueryPage',{
@@ -20,25 +21,32 @@ module.exports.displayTables = async function(req,res){
 
     var format = /[`!@#$%^&*+=;<>?~]/;
     captcha_validation_token = true
-
-    if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null)
-    {
+    if(req.session.captcha != req.body['captcha-val']){
+        console.log("Session captcha",req.session.captcha)
+        console.log("Capthcha-val",req.body['captcha-val'])
+        captcha_validation_token =  false
+    }else if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null){
         captcha_validation_token = false
+    }else{
+
+        queryOptions = {
+            secret: "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2",
+            response: req.body['g-recaptcha-response'],
+            remoteip: req.connection.remoteAddress
+            
+        }
+        const secretKey = "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2";
+    
+        const verificationURL = "https://www.google.com/recaptcha/api/siteverify"
+    
+        const response = await superagent.get(verificationURL).query(queryOptions)
+        console.log(response.body)
+    
+        captcha_validation_token = response.body.success;
+
     }
 
-    queryOptions = {
-        secret: "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2",
-        response: req.body['g-recaptcha-response'],
-        remoteip: req.connection.remoteAddress
-    }
-    const secretKey = "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2";
-
-    const verificationURL = "https://www.google.com/recaptcha/api/siteverify"
-
-    const response = await superagent.get(verificationURL).query(queryOptions)
-    console.log(response.body)
-
-    captcha_validation_token = response.body.success;
+    
 
     // console.log("captcha_validation_token",captcha_validation_token)
 
@@ -67,11 +75,14 @@ module.exports.displayTables = async function(req,res){
             // queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
             // query_ = `SELECT a.count , c.* from (${queryRaw} LIMIT 500) c,(SELECT DISTINCT COUNT(*) count from ${req.body.pathogenSelection}) a`
         }else{
+            // console.log(req.body)
             var sbc = JSON.stringify(req.body.searchByColumn);
-           
             sbc = sbc.replace(/^\[([\s\S]*)]$/,'$1');
 
-            if(sbc.length>10){
+            if((Array.isArray(req.body.searchByColumn))&(req.body.searchByColumn.length>10)){
+                // console.log("req body values",req.body.searchByColumn)
+                // console.log("sbc",sbc)
+                // console.log("sbc length",sbc.length)
                 throw Error('number of values entered greater than 10')
             }
              

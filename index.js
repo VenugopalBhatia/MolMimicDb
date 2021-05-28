@@ -1,10 +1,30 @@
 const express = require('express');
+const session = require('express-session')
 const port = 8000;
 const compression = require('compression');
 const app = express();
 const expressLayouts = require('express-ejs-layouts'); 
 const cachingDb = require('./config/mongoose');
 const Cache = require('./models/cache');
+const svgCaptcha = require('svg-captcha-express');
+const captcha = require('svg-captcha-express').create({
+	cookie: 'captcha'
+});
+
+const captchaUrl = '/captcha.jpg'
+
+app.use(
+    session({
+        secret:'imitateDB_development',
+        resave:false,
+        saveUninitialized:true,
+        cookie:{
+            maxAge:2*60*1000
+        }
+
+    })
+)
+
 
 app.use(express.static('assets'));
 app.use(expressLayouts);
@@ -13,11 +33,12 @@ app.set('layout extractScripts',true);
 
 
 app.set('view engine','ejs');
-app.set('views','./views')
+app.set('views','./views');
+
 
 app.use(compression());
 app.use(express.urlencoded({extended:true}));
-
+app.get(captchaUrl, captcha.image());
 app.use('/',require('./routes'));
 
 
