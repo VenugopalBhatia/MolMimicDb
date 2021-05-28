@@ -5,11 +5,11 @@ const compression = require('compression');
 const app = express();
 const expressLayouts = require('express-ejs-layouts'); 
 const cachingDb = require('./config/mongoose');
+const mongoose = require('mongoose')
 const Cache = require('./models/cache');
 const svgCaptcha = require('svg-captcha-express');
-const captcha = require('svg-captcha-express').create({
-	cookie: 'captcha'
-});
+const MongoStore = require('connect-mongo');
+
 
 const captchaUrl = '/captcha.jpg'
 
@@ -20,10 +20,21 @@ app.use(
         saveUninitialized:true,
         cookie:{
             maxAge:2*60*1000
-        }
+        },
+        store: MongoStore.create({
+            mongoUrl:'mongodb://localhost/cachingdb',
+            autoRemove:'disabled',
+
+        },function(err){
+            console.log(err || "MongoStore connected to database")
+        })
 
     })
 )
+
+const captcha = require('svg-captcha-express').create({
+	cookie: 'captcha'
+});
 
 
 app.use(express.static('assets'));
