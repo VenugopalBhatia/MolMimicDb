@@ -8,6 +8,7 @@ const { query } = require('../models/mimicDbConnector');
 router.get('/',queryPage.getQueryPageOnLoad);
 router.post('/',queryPage.displayTables);
 router.get('/getCSVData',queryPage.queryCSVResult);
+router.post('/getCSVData',queryPage.sendCSVResult);
 router.get('/get-dropdown',queryPage.getColumnSelectionDropdown);
 router.get('/get-columnValues',queryPage.getColumnValues);
 router.get('/download',queryPage.queryCSVResult);

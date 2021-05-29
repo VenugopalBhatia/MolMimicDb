@@ -10,7 +10,6 @@ const Cache = require('./models/cache');
 const svgCaptcha = require('svg-captcha-express');
 const MongoStore = require('connect-mongo');
 
-
 const captchaUrl = '/captcha.jpg'
 
 app.use(

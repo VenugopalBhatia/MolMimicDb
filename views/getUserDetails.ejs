@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="/css/getUserDetails.css">
+<!-- <div id="contact">Contact</div> -->
+
+<div id="contactForm">
+
+  <h1>Please Enter your Email</h1>
+  <small>Your data will be sent to your email within 24 hours</small>
+  
+  <form action="/query/getCSVData" method = "POST">
+    <input placeholder="Name" type="text" name = "name" required />
+    <input placeholder="Email" type="email" name = "email" required />
+    <input class="formBtn" type="submit" />
+    <input class="formBtn" type="reset" />
+  </form>
+</div>

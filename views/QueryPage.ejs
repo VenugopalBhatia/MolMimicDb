@@ -11,6 +11,7 @@
                 <!-- Add condition to keep table hidden if empty set -->
             
             <% if(rows.length!=0){ %>
+                <%-include('getUserDetails') %>
                 <div id = "dataInfo">
                     <div id = "info">
                         <span>
@@ -91,9 +92,22 @@
 
         </div>
 
+        
+
+        <% if((rows.length!=0) && (TableLength > 10000) && (TableLength<=100000)){ %>
+            <script>
+                $('#getCSV').on('click',function(event){
+                    event.preventDefault()
+
+                })
+            </script>
+            <script type = "text/javascript" src = "/js/getUserDetails.js"></script>
+        <% } %>
+
         <script src="https://kit.fontawesome.com/649bd7dfb2.js" crossorigin="anonymous"></script>
         <script type = "text/javascript" src = "/js/sidePanel.js"></script>
-
+        
+        
         
         
         

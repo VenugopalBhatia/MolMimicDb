@@ -1,0 +1,54 @@
+<html>
+<head>
+    <style>
+        header{
+            background-color: #123c69;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 75px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        header a{
+            text-decoration: none;
+        }
+        header h1{
+            padding: 10px;
+            color: rgb(246, 246, 250);
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<header>
+    <a href=""><h1 >ImitateDb</h1></a>
+</header>
+<div>
+    <p>Hi <%= data['name'] %>,</p>
+    <p>
+        Attached to the email is the data from the query you ran. Your query yielded <b> <%= data['count'] %> </b> rows. Details about your query are as follows:
+        <ul>
+            <li>
+                Name of the data table: <b> <%= data['table_name'] %> </b>
+            </li>
+            <li>
+                Filter applied on column: <b><%= data['filter_name'] %></b> 
+            </li>
+            <li>
+                Values entered: <b><%= data['values_entered'] %></b>
+            </li>
+        </ul>
+    </p>
+    <p>
+        Thanks for using ImitateDb. We hope our data can help with your research.
+        <br>
+        Sincerely,
+        <br>
+        The ImitateDb team
+    </p>
+    
+</div>
+
+</html>
