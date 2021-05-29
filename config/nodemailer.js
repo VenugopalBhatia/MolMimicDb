@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
     secure:false,
     auth:{
         user : 'dbimitate',
-        pass: 'imitateDb_15'
+        pass: 'CSBL@research'
     }
     
 })

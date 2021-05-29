@@ -26,14 +26,20 @@
                             <% if(valuesNotPresent.length) {%>
                              <h5 >Entries not found for = <span style = "color: crimson;"> <%= valuesNotPresent %> </span></h5>   
                             <% } %>
+                            <%if(TableLength>100000){ %>
+                            <h5 style = "color: crimson;">Query too broad to give downloadable results, kindly narrow your search </h5> 
+                            <%}%>
                         </span>
                     </div>
-                    
+                    <% if (TableLength < 100000 ){%>
                     <div id = "DownloadQueryData">
                         <a href="/query/getCSVData"><i class="fas fa-file-excel" id = "getCSV"></i></a>
                         
 
                     </div>
+
+                    <% } %>
+                    
 
                 </div>
                 <div>

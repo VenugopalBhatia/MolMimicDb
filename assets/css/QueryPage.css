@@ -48,12 +48,12 @@
 }
 #ResultTable tr:nth-child(odd){
     background-color: #123c69c4;
-    color: #b1a9a5;
+    color: rgb(167, 165, 175);
 
 }
 
 #ResultTable tr:nth-child(odd) a{
-    color: #b1a9a5;
+    color: rgb(167, 165, 175);
 }
 
 #ResultTable th{
