@@ -2,7 +2,6 @@ const express = require('express');
 const session = require('express-session')
 const port = 8000;
 const compression = require('compression');
-const app = express();
 const expressLayouts = require('express-ejs-layouts'); 
 const cachingDb = require('./config/mongoose');
 const mongoose = require('mongoose')
@@ -11,7 +10,12 @@ const svgCaptcha = require('svg-captcha-express');
 const MongoStore = require('connect-mongo');
 
 const captchaUrl = '/captcha.jpg'
+const app = express();
 
+app.use(compression());
+app.use(express.urlencoded({extended:true}));
+
+// app.use(cookieParser('imitateDB_development'))
 app.use(
     session({
         secret:'imitateDB_development',
@@ -46,8 +50,8 @@ app.set('view engine','ejs');
 app.set('views','./views');
 
 
-app.use(compression());
-app.use(express.urlencoded({extended:true}));
+
+
 app.get(captchaUrl, captcha.image());
 app.use('/',require('./routes'));
 

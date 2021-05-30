@@ -30,6 +30,7 @@ var tableSelect = $('input[type=radio]').change(function(){
             $('#tableColumns').change(searchByColumn).change();
             let rowVals = resData['data']
             $("#tableColumns").select2({
+                theme: "bootstrap-5",
                 data: rowVals
             });
             $("#tableColumns").val(null).trigger('change');
@@ -100,6 +101,7 @@ function searchByColumn(){
                 // $('#searchByColumn').selectize()
                 $('#searchByColumn').attr("");
                 $('#searchByColumn').select2({
+                    theme: "bootstrap-5",
                     multiple: true,
                     tags:true,
                     data: FieldVals,

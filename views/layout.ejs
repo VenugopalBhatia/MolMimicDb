@@ -1,15 +1,36 @@
 <html>
     <head>
         <link rel="stylesheet" href="/css/layouts.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+        
         <%- style %>
     </head>
     <body>
+        
+        
         <%- include('_header'); %>
 
         <%- body %>
 
         <%- include('_footer'); %>
+
+        <script>
+            
+            <% if(locals.notification && notification.length>0) { %>
+                new Noty({
+                    type:'<%= messageType %>',
+                    text: "<%= notification %>",
+                    timeout:1500,
+                    theme: 'nest',
+                    layout: 'topRight',
+                }).show()
+            <% } %>
+
+        </script>
         
         <%- script %>
+
+        
     </body>
 </html>

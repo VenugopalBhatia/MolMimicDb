@@ -12,11 +12,26 @@ const emailResults = require('./mailer/emailResults');
 var queryResult = [];
 var query_result_count = 0;
 var query_details = {}
+var ErrMessage = ""
+var SuccessMessage = ""
 module.exports.getQueryPageOnLoad = function(req,res){
+    res.locals.notification = "Welcome! get started by clicking the button on the right"
+    res.locals.messageType = "success"
+    if(ErrMessage.length>0){
+        res.locals.notification = ErrMessage
+        res.locals.messageType = 'error'
+        ErrMessage = ""
+        
+    }
+    if(SuccessMessage.length>0){
+        res.locals.notification = SuccessMessage
+        res.locals.messageType = 'info'
+        SuccessMessage = ""
+    }
     return res.render('QueryPage',{
         rows:[],
         columns :[],
-        message: "Welcome! get started by clicking the button on the right"
+        message: "Welcome! get started by clicking the button on the right",
     })
 }
 
@@ -91,6 +106,8 @@ module.exports.displayTables = async function(req,res){
 
     if(!captcha_validation_token){
         // console.log("captcha_validation_token",captcha_validation_token)
+        res.locals.notification = 'Incorrect Captcha please try again'
+        res.locals.messageType = 'error'
         return res.render('QueryPage',{
             rows:[],
             columns :[],
@@ -112,7 +129,9 @@ module.exports.displayTables = async function(req,res){
             return res.render('QueryPage',{
                 rows:[],
                 columns :[],
-                message: "Kindly add filter parameters"
+                message: "Kindly add filter parameters",
+                notification:"Check your filter parameters",
+                messageType: 'warning'
             })
 
             // queryRaw = `SELECT DISTINCT * from ${req.body.pathogenSelection}`
@@ -163,6 +182,8 @@ module.exports.displayTables = async function(req,res){
             query_details['values_entered'] = sbc
             // console.log('query details',query_details)
             // console.log(req.body.tableColumns);
+            res.locals.notification = 'Displaying results now'
+            res.locals.messageType = 'info'
             return res.render('QueryPage',{
             rows:rows,
             columns : columnNames,
@@ -174,10 +195,13 @@ module.exports.displayTables = async function(req,res){
             })
 
         }else{
+            res.locals.notification = "No results found, kindly check filter parameters",
+            res.locals.messageType = 'error'
             return res.render('QueryPage',{
                 rows:[],
                 columns :[],
-                message: "No results found, kindly check filter parameters"
+                message: "No results found, kindly check filter parameters",
+                
             })
         }
 
@@ -188,7 +212,9 @@ module.exports.displayTables = async function(req,res){
         res.render('QueryPage',{
             rows:[],
             columns :[],
-            message: "An error occurred in running query: " + err
+            message: "An error occurred in running query: " + err,
+            notification:'An error occured, please try again',
+            messageType:"error"
         })
 
     }
@@ -406,12 +432,13 @@ module.exports.sendCSVResult = async function(req,res){
             })
             
             
-            var message = `Hey ${req.body.name} an email will be sent to ${req.body.email} with the requested data. You may make another query.`
-
+            var message = `Hey ${req.body.name} an email will be sent to ${req.body.email} with the requested data.`
+            SuccessMessage = message
             return res.redirect('back');
 
 
         }catch(err){
+            ErrMessage = 'An error occurred, please try again'
             console.log("An error occurred in queueing email",err)
             return res.redirect('/')
         }
@@ -432,10 +459,12 @@ module.exports.queryCSVResult = async function(req,res){
             rows = rows[0]
             const json2csv = new Parser();
             const csv = json2csv.parse(rows);
+            
             res.attachment('data.csv')
             res.status(200).send(csv)
 
         }catch(err){
+            // req.flash('error','Error in data download, please try again')
             console.log("Error in data download",err)
             return res.redirect('back');
 
