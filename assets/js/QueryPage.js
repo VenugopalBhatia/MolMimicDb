@@ -101,6 +101,7 @@ function searchByColumn(){
                 // $('#searchByColumn').selectize()
                 $('#searchByColumn').attr("");
                 $('#searchByColumn').select2({
+                    
                     theme: "bootstrap-5",
                     multiple: true,
                     tags:true,

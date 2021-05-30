@@ -177,13 +177,18 @@ module.exports.displayTables = async function(req,res){
             queryResult = queryRaw;
             query_result_count = tableLength;
             query_details['count'] = query_result_count
-            query_details['filter_name'] = req.body.tableColumns
-            query_details['table_name'] = req.body.pathogenSelection
+            query_details['filter_name'] = req.body.tableColumns.replace(/_/g," ")
+            query_details['table_name'] = req.body.pathogenSelection.replace(/_/g," ")
             query_details['values_entered'] = sbc
             // console.log('query details',query_details)
             // console.log(req.body.tableColumns);
             res.locals.notification = 'Displaying results now'
             res.locals.messageType = 'info'
+            if(tableLength>100000){
+                res.locals.notification = 'Query yields too broad results! Download unavailable'
+                res.locals.messageType = 'alert'
+            }
+            
             return res.render('QueryPage',{
             rows:rows,
             columns : columnNames,
