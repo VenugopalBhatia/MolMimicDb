@@ -1,9 +1,16 @@
+.main{
+    
+    padding-bottom: 2.5rem;
+}
 .content{
     box-sizing: border-box;
-    min-height: 500px;
-    height: 75vh;
+    position: relative;
+    height: 80%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin:10px;
 }
 
 
@@ -52,25 +59,22 @@ h3{
 
 .about{
     box-sizing: border-box;
-    min-height: 460px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     /* flex-wrap: wrap; */
-    min-width: 200px;
-    height: 50vh;
-    width: 48vw;
+    /* height: 460px;
+    width: 90vw; */
     margin-right: 1vw;
     font-size: 75%;
     padding: 0.5%;
     background-color: rgb(245 246 247 / 69%);
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .about p{
     box-sizing: border-box;
-    height: 33%;
     /* align-content: center; */
     /* justify-content: center; */
     background-color: white;
@@ -80,24 +84,26 @@ h3{
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
+/* information wrapper properties */
+.info-wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
 /* schematic properties */
 .schematic{
     text-align: center;
-    min-height: 460px;
-    min-width: 200px;
-    height:50vh;
     width: 48vw;
     background-color: rgb(245 246 247 / 69%);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.schematic img{
+/* .schematic img{
     border: 1px solid #ddd;
     height:auto;
-    width: 48vw;
-    /* min-height: 127px; */
+    min-height: 127px; 
     min-width: 100px;
-    /* border-radius: 10px; */
-}
+    border-radius: 10px; 
+}  */
 
 .schematic div.label{
     box-sizing: border-box;

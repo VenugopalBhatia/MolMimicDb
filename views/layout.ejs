@@ -7,14 +7,20 @@
         <%- style %>
     </head>
     <body>
+        <div id = "page-container">
+            <div>
+                <%- include('_header'); %>
+            </div>
+            
+            <%- body %>
+    
+            <div>
+                <%- include('_footer'); %>
+            </div>
+            
+        </div>
         
         
-        <%- include('_header'); %>
-
-        <%- body %>
-
-        <%- include('_footer'); %>
-
         <script>
             
             <% if(locals.notification && notification.length>0) { %>

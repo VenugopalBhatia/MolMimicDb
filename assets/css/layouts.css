@@ -1,4 +1,10 @@
 body{
     background-color:#f5f7fa;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
+}
+
+#page-container{
+    position: relative;
+    height:1000px;
 }
