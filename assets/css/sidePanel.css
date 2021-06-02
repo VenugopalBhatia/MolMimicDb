@@ -5,7 +5,8 @@
     z-index: 1; /* Stay on top */
     top: 0;
     right: 0;
-    background-color: rgba(52, 57, 75, 0.9); /* Black*/
+    /* background-color: rgb(2 41 82 / 86%); */
+    background-image: linear-gradient( #051423f7  , #123c69d1);
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */

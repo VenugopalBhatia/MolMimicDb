@@ -57,6 +57,14 @@ h3{
 }
 /* Description properties */
 
+.card{
+    background-color: white;
+    padding: 2%;
+    border-radius: 1%;
+    /* font-size: 1vw; */
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+
 .about{
     box-sizing: border-box;
     display: flex;
@@ -67,35 +75,43 @@ h3{
     /* height: 460px;
     width: 90vw; */
     margin-right: 1vw;
+    
+}
+
+.adn-info{
+    width:40vw;
+
+}
+
+.card-type2{
     font-size: 75%;
     padding: 0.5%;
     background-color: rgb(245 246 247 / 69%);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+
+
 .about p{
     box-sizing: border-box;
     /* align-content: center; */
     /* justify-content: center; */
-    background-color: white;
-    padding: 2%;
-    border-radius: 1%;
-    /* font-size: 1vw; */
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    
 }
 
 /* information wrapper properties */
 .info-wrapper{
+    width:100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
 }
 
 /* schematic properties */
 .schematic{
     text-align: center;
     width: 48vw;
-    background-color: rgb(245 246 247 / 69%);
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    
 }
 /* .schematic img{
     border: 1px solid #ddd;
@@ -105,11 +121,7 @@ h3{
     border-radius: 10px; 
 }  */
 
-.schematic div.label{
-    box-sizing: border-box;
-    height: 45px;
-    padding: 10px;
-}
+
 
 /* Style the button that is used to open the sidepanel */
 .openbtn {

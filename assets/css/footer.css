@@ -3,7 +3,7 @@ footer {
     margin: 0;
     display: flex;
     align-items: center;
-    height: 2.5rem;
+    height: 5 rem;
     width: 100%;
     box-sizing: border-box;
     background-color: #474646;
@@ -12,7 +12,7 @@ footer {
   }
 
   footer p {
-    margin: 5px;
+    margin: 15px;
   }
   
   footer ul {
