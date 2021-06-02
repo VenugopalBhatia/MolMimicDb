@@ -10,7 +10,7 @@ exports.sendCSVAsAttachment = async function(query_details,queryResult,user_emai
         var csv = await getCSVData(queryResult,query_details['count']);
         var HTMLString = nodemailer.renderTemplate(query_details,'/emailCSVData.ejs')
         nodemailer.transporter.sendMail({
-            from: '"Imitate Db Team" dbimitate@gmail.com',
+            from: '"ImitateDB Team" dbimitate@gmail.com',
             to: user_email,
             subject: 'The Data you requested from Imitate Db',
             html:HTMLString,
