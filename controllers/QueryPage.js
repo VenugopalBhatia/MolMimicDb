@@ -124,6 +124,10 @@ module.exports.displayTables = async function(req,res){
         if(!check_sql_query){
             throw new Error('Possible sql injection detected')
         }
+
+        req.session.queryResult = []
+        req.session.query_result_count = 0
+        req.session.query_details = {}
         
         let query_ = ""
         let queryRaw = ""
