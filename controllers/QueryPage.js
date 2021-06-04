@@ -9,22 +9,24 @@ const emailResults = require('./mailer/emailResults');
 
 
 
-var queryResult = [];
-var query_result_count = 0;
-var query_details = {}
-var ErrMessage = ""
-var SuccessMessage = ""
+// var queryResult = [];
+// var query_result_count = 0;
+// var query_details = {}
+
 module.exports.getQueryPageOnLoad = function(req,res){
+    req.session.queryResult = []
+    req.session.query_result_count = 0
+    req.session.query_details = {}
     res.locals.notification = "Welcome! get started by clicking the button on the right"
     res.locals.messageType = "success"
-    if(ErrMessage.length>0){
-        res.locals.notification = ErrMessage
+    if((req.session.ErrMessage) && (req.session.ErrMessage.length>0)){
+        res.locals.notification = req.session.ErrMessage
         res.locals.messageType = 'error'
-        ErrMessage = ""
+        req.session.ErrMessage = ""
         
     }
-    if(SuccessMessage.length>0){
-        res.locals.notification = SuccessMessage
+    if((req.session.SuccessMessage) && (req.session.SuccessMessage.length>0)){
+        res.locals.notification = req.session.SuccessMessage
         res.locals.messageType = 'info'
         SuccessMessage = ""
     }
@@ -40,11 +42,11 @@ var validateCaptcha =  async function(req,res){
     let captcha_validation_token = true
     // console.log("Request Body",req.body)
     if(req.session.captcha != req.body['captcha-val']){
-        // console.log(req.session.captcha)
-        // console.log(req.body['captcha-val'])
+        console.log("actual captcha",req.session.captcha)
+        console.log("entered captcha",req.body['captcha-val'])
         captcha_validation_token =  false
     }else if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null){
-        // console.log("request body problem")
+        console.log("request body problem")
         captcha_validation_token = false
     }else{
 
@@ -59,7 +61,7 @@ var validateCaptcha =  async function(req,res){
         const verificationURL = "https://www.google.com/recaptcha/api/siteverify"
     
         const response = await superagent.get(verificationURL).query(queryOptions)
-        // console.log(response.body)
+        console.log(response.body)
     
         captcha_validation_token = response.body.success;
 
@@ -174,12 +176,12 @@ module.exports.displayTables = async function(req,res){
             let valuesNotPresent =  await get_values_absent(req,mongoQuery);
             // let allFieldValuesSet = new Set(allFieldvals)
             // rows = rows.slice(0,500)
-            queryResult = queryRaw;
-            query_result_count = tableLength;
-            query_details['count'] = query_result_count
-            query_details['filter_name'] = req.body.tableColumns.replace(/_/g," ")
-            query_details['table_name'] = req.body.pathogenSelection.replace(/_/g," ")
-            query_details['values_entered'] = sbc
+            req.session.queryResult = queryRaw;
+            req.session.query_result_count = tableLength;
+            req.session.query_details['count'] = req.session.query_result_count
+            req.session.query_details['filter_name'] = req.body.tableColumns.replace(/_/g," ")
+            req.session.query_details['table_name'] = req.body.pathogenSelection.replace(/_/g," ")
+            req.session.query_details['values_entered'] = sbc
             // console.log('query details',query_details)
             // console.log(req.body.tableColumns);
             res.locals.notification = 'Displaying results now'
@@ -420,13 +422,13 @@ module.exports.getColumnValues = async function(req,res){
 // the queue job and email attachment
 
 module.exports.sendCSVResult = async function(req,res){
-    if(queryResult.length && query_result_count>10000 && query_result_count<=100000){
+    if(req.session.queryResult.length && req.session.query_result_count>10000 && req.session.query_result_count<=100000){
         try{
             // console.log("Request body",req.body)
-            query_details['name'] = req.body.name;
+            req.session.query_details['name'] = req.body.name;
             let processParams = {}
-            processParams['query_details'] = query_details
-            processParams['queryResult'] = queryResult
+            processParams['query_details'] = req.session.query_details
+            processParams['queryResult'] = req.session.queryResult
             processParams['email'] = req.body.email
             let job = queue.create('emails',processParams).priority('medium').save(function(err){
                 if(err){
@@ -438,19 +440,19 @@ module.exports.sendCSVResult = async function(req,res){
             
             
             var message = `Hey ${req.body.name} an email will be sent to ${req.body.email} with the requested data.`
-            SuccessMessage = message
+            req.session.SuccessMessage = message
             return res.redirect('back');
 
 
         }catch(err){
-            ErrMessage = 'An error occurred, please try again'
+            req.session.ErrMessage = 'An error occurred, please try again'
             console.log("An error occurred in queueing email",err)
             return res.redirect('/')
         }
 
     }else{
-        console.log("query result length",queryResult)
-        console.log("query_result_count",query_result_count)
+        console.log("query result length",req.session.queryResult)
+        console.log("query_result_count",req.session.query_result_count)
         return res.redirect('back');
     }
 }
@@ -458,9 +460,9 @@ module.exports.sendCSVResult = async function(req,res){
 
 module.exports.queryCSVResult = async function(req,res){
     
-    if(queryResult.length && query_result_count>0 && query_result_count<=10000){
+    if(req.session.queryResult.length && req.session.query_result_count>0 && req.session.query_result_count<=10000){
         try{
-            var rows = await db.promise().query(queryResult)
+            var rows = await db.promise().query(req.session.queryResult)
             rows = rows[0]
             const json2csv = new Parser();
             const csv = json2csv.parse(rows);
