@@ -28,7 +28,7 @@ module.exports.getQueryPageOnLoad = function(req,res){
     if((req.session.SuccessMessage) && (req.session.SuccessMessage.length>0)){
         res.locals.notification = req.session.SuccessMessage
         res.locals.messageType = 'info'
-        SuccessMessage = ""
+        req.session.SuccessMessage = ""
     }
     return res.render('QueryPage',{
         rows:[],
