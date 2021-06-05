@@ -1,5 +1,5 @@
 .main{
-    
+    font-size: 1.2vw;
     padding-bottom: 2.5rem;
 }
 .content{
@@ -140,3 +140,22 @@ h3{
     background-color: #444;
     position: fixed;
   }
+
+  @media screen and (max-width : 800px){
+    .main{
+        font-size: 12px;
+    }
+    .info-wrapper{
+        height:1000px;
+        flex-direction: column;
+    }
+
+    .schematic{
+        width:90vw;
+        margin: auto;
+    }
+    .adn-info{
+        width:90vw;
+        margin: auto;
+    }
+}

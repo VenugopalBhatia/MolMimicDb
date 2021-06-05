@@ -10,8 +10,8 @@
 }
 
 #SideFilter{
-    /* width : 45vw; */
-    /* min-width: 100px; */
+    max-height: 90vh;
+    overflow-y:auto;
 }
 
 .side{

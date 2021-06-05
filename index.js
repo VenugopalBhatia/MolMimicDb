@@ -54,7 +54,16 @@ if (cluster.isMaster) {
     )
 
     const captcha = require('svg-captcha-express').create({
-        cookie: 'captcha'
+        cookie: 'captcha',
+        background: 'rgb(255,200,150)',
+        fontSize: 60,
+        width: 250,
+        height: 150,
+        charPreset: 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789',
+        size: 5,
+        noise: 3,
+        size: 4, // size of random string
+        color: false
     });
 
 
