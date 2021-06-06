@@ -79,8 +79,8 @@ h3{
 }
 
 .adn-info{
-    width:40vw;
-
+    width:40%;
+    max-height: 95%;
 }
 
 .card-type2{
@@ -110,7 +110,8 @@ h3{
 /* schematic properties */
 .schematic{
     text-align: center;
-    width: 48vw;
+    width: 48%;
+    max-height:95%;
     
 }
 /* .schematic img{
@@ -141,9 +142,13 @@ h3{
     position: fixed;
   }
 
-  @media screen and (max-width : 800px){
+  @media screen and (max-width : 800px),screen and (min-width:2000px),screen and (min-height:1000px){
+    #page-container{
+        height:100vh;
+    }
     .main{
         font-size: 12px;
+        max-width: 1000px;
     }
     .info-wrapper{
         height:1000px;
@@ -151,11 +156,11 @@ h3{
     }
 
     .schematic{
-        width:90vw;
+        width:90%;
         margin: auto;
     }
     .adn-info{
-        width:90vw;
+        width:90%;
         margin: auto;
     }
 }

@@ -42,8 +42,8 @@ var validateCaptcha =  async function(req,res){
     let captcha_validation_token = true
     // console.log("Request Body",req.body)
     if(req.session.captcha != req.body['captcha-val']){
-        console.log("actual captcha",req.session.captcha)
-        console.log("entered captcha",req.body['captcha-val'])
+        // console.log("actual captcha",req.session.captcha)
+        // console.log("entered captcha",req.body['captcha-val'])
         captcha_validation_token =  false
     }else if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null){
         console.log("request body problem")
@@ -61,7 +61,7 @@ var validateCaptcha =  async function(req,res){
         const verificationURL = "https://www.google.com/recaptcha/api/siteverify"
     
         const response = await superagent.get(verificationURL).query(queryOptions)
-        console.log(response.body)
+        // console.log(response.body)
     
         captcha_validation_token = response.body.success;
 
