@@ -31,7 +31,7 @@ var tableSelect = $('input[type=radio]').change(function(){
             let rowVals = resData['data']
             $("#tableColumns").select2({
                 theme: "bootstrap-5",
-                placeholder:"Select",
+                placeholder:"Select or Type",
                 data: rowVals
             });
             $("#tableColumns").val(null).trigger('change');
@@ -104,7 +104,7 @@ function searchByColumn(){
                 $('#searchByColumn').select2({
                     
                     theme: "bootstrap-5",
-                    placeholder:"Select",
+                    placeholder:"Select or Type",
                     multiple: true,
                     tags:true,
                     data: FieldVals,
