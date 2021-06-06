@@ -144,7 +144,6 @@ h3{
 
   @media screen and (max-width : 800px),screen and (min-width:2000px),screen and (min-height:1000px){
     #page-container{
-        height:1024px;
         height:100vh;
     }
     .main{
