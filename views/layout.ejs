@@ -25,7 +25,9 @@
         
         
         <script>
-                        
+            if(window.innerWidth() <= 800){
+                document.getElementById("page-container").style.height = window.innerHeight + 'px';
+            }
             <% if(locals.notification && notification.length>0) { %>
                 new Noty({
                     type:'<%= messageType %>',
