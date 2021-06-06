@@ -164,3 +164,9 @@ h3{
         margin: auto;
     }
 }
+
+@media screen and (max-height : 650px){
+    .info-wrapper{
+        height:95vh;
+    }
+}
