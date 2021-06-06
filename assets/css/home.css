@@ -165,7 +165,7 @@ h3{
     }
 }
 
-@media screen and (max-height : 650px){
+@media screen and (max-height : 650px) and (max-width:800px){
     .info-wrapper{
         height:95vh;
     }
