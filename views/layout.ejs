@@ -6,6 +6,8 @@
         <script src = "https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
         
         <%- style %>
+        
+        
     </head>
     <body>
         <div id = "page-container">
@@ -25,9 +27,7 @@
         
         
         <script>
-            if(window.innerWidth <= 800){
-                document.getElementById("page-container").style.height = window.innerHeight + 'px';
-            }
+            
             <% if(locals.notification && notification.length>0) { %>
                 new Noty({
                     type:'<%= messageType %>',

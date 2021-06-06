@@ -68,7 +68,15 @@
        
         
     </div>
-    
+    <script>
+
+        if(window.innerWidth <= 800){
+            document.getElementById("page-container").style.height = window.innerHeight + 'px';
+        }else{
+            document.getElementById("page-container").style.height = window.innerHeight*1.5 + 'px';
+        }
+
+    </script>
     <!-- <%- include('_queryForm') %>
     <button class="openbtn"  onclick="openNav()">&#9776; </button>
     <script type = "text/javascript" src = "/js/sidePanel.js"></script> -->
