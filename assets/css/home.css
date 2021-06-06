@@ -143,9 +143,9 @@ h3{
   }
 
   @media screen and (max-width : 800px),screen and (min-width:2000px),screen and (min-height:1000px){
-    #page-container{
+    /* #page-container{
         height:100vh;
-    }
+    } */
     .main{
         font-size: 12px;
         max-width: 1000px;
