@@ -165,7 +165,7 @@ h3{
 @media screen and (max-height : 650px) and (max-width:800px){
     .main{
         font-size: 8px;
-        height:150vh;
+        height:180vh;
     }
     .info-wrapper{
         height:640px;
