@@ -14,14 +14,23 @@
 }
 
 .inst_text{
-    
+    list-style-type: none;
     width:75%;
     font-size: 1.5vw;
     padding: 2%;
 
 }
 
+.inst_text li{
+    padding:1%;
+}
+
 .inst_img{
     width:48%;
 
+}
+
+
+.text-imp{
+    color:crimson;
 }

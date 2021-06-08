@@ -68,12 +68,15 @@ h3{
     /* height: 460px;
     width: 90vw; */
     margin-right: 1vw;
-    
+    margin-bottom: 2vh;
 }
 
 .adn-info{
     width:40%;
     max-height: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .card-type2{
@@ -160,6 +163,9 @@ h3{
 }
 
 @media screen and (max-height : 650px) and (max-width:800px){
+    .main{
+        font-size: 8px;
+    }
     .info-wrapper{
         height:640px;
     }
