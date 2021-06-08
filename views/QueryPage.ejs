@@ -86,7 +86,10 @@
                 </div>
             <% }else{ %>
                 <h4><%= message %></h4>
-                <%- include('getStarted') %>
+                <% if((locals.messageType) && (locals.messageType == 'success') ){ %>
+                    <%- include('getStarted') %>
+                <% } %>
+                
             <% } %>
         
             </div>
