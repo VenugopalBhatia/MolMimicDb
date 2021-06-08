@@ -5,7 +5,7 @@
 .content{
     box-sizing: border-box;
     position: relative;
-    height: 80%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -57,13 +57,6 @@ h3{
 }
 /* Description properties */
 
-.card{
-    background-color: white;
-    padding: 2%;
-    border-radius: 1%;
-    /* font-size: 1vw; */
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-}
 
 .about{
     box-sizing: border-box;
@@ -93,6 +86,7 @@ h3{
 
 
 .about p{
+    text-align: center;
     box-sizing: border-box;
     /* align-content: center; */
     /* justify-content: center; */
@@ -144,7 +138,7 @@ h3{
 
   @media screen and (max-width : 800px),screen and (min-width:2000px),screen and (min-height:1000px){
     #page-container{
-        height:100vh;
+        /* height:100vh; */
     }
     .main{
         font-size: 12px;

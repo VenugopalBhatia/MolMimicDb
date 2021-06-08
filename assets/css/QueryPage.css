@@ -1,8 +1,7 @@
 
 .container{
     /* display:flex; */
-    min-height: 1000px;
-    
+    min-height: 1200px;
 }
 
 #MainRes div span{
@@ -70,13 +69,7 @@
 
 /* for information section */
 
-.card{
-    background-color: white;
-    padding: 2%;
-    border-radius: 1%;
-    /* font-size: 1vw; */
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-}
+
 
 .card-type2{
     font-size: 75%;

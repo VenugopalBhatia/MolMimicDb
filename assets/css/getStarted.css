@@ -1,0 +1,27 @@
+.GetStartedContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.Instruction{
+    
+    display: flex;
+    flex-direction: row;
+    margin: 2%;
+
+}
+
+.inst_text{
+    
+    width:75%;
+    font-size: 1.5vw;
+    padding: 2%;
+
+}
+
+.inst_img{
+    width:48%;
+
+}
