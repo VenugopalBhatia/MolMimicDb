@@ -63,11 +63,12 @@ h3{
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    margin:2%;
+    width:99%;
     /* flex-wrap: wrap; */
     /* height: 460px;
     width: 90vw; */
-    margin-right: 1vw;
-    margin-bottom: 2vh;
+    
 }
 
 .adn-info{
@@ -118,7 +119,10 @@ h3{
     min-width: 100px;
     border-radius: 10px; 
 }  */
-
+.other-info{
+    width:99%;
+    margin:2%;
+}
 
 
 /* Style the button that is used to open the sidepanel */
@@ -153,11 +157,11 @@ h3{
     }
 
     .schematic{
-        width:90%;
+        width:99%;
         margin: auto;
     }
     .adn-info{
-        width:90%;
+        width:99%;
         height: 60%;
         margin: auto;
     }
