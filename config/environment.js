@@ -41,7 +41,7 @@ const development = {
 
 const production = {
     name: 'production',
-    port:process.env.PORT,
+    port:process.env.port,
     cachingdb :process.env.cachingdb,
     sessionCookieSecret: process.env.sessionCookieSecret,
     assets: process.env.assets,
