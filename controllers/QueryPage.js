@@ -6,7 +6,7 @@ const Cache = require('../models/cache');
 const queue = require('../config/kue');
 const emailWorker = require('../workers/email_worker');
 const emailResults = require('./mailer/emailResults');
-
+const env = require('../config/environment')
 
 
 // var queryResult = [];
@@ -51,12 +51,12 @@ var validateCaptcha =  async function(req,res){
     }else{
 
         var queryOptions = {
-            secret: "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2",
+            secret: env.recaptchaSecret,
             response: req.body['g-recaptcha-response'],
             remoteip: req.connection.remoteAddress
             
         }
-        const secretKey = "6LcBXPUaAAAAALEKxLIfjhbIex78S8EF1Zfs2sM2";
+        const secretKey = env.recaptchaSecret;
     
         const verificationURL = "https://www.google.com/recaptcha/api/siteverify"
     

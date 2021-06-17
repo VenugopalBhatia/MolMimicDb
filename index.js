@@ -1,7 +1,6 @@
 const express = require('express');
 var cluster = require( 'cluster' );
 const session = require('express-session')
-const port = 8000;
 const compression = require('compression');
 const expressLayouts = require('express-ejs-layouts'); 
 const cachingDb = require('./config/mongoose');
@@ -11,7 +10,8 @@ const svgCaptcha = require('svg-captcha-express');
 const MongoStore = require('connect-mongo');
 const numCPUs = require('os').cpus().length;
 const captchaUrl = '/captcha.jpg'
-
+const env = require('./config/environment')
+const port = env.port
 if (cluster.isMaster) {
 
     console.log(`Master ${process.pid} is running`);
@@ -36,14 +36,14 @@ if (cluster.isMaster) {
     // app.use(cookieParser('imitateDB_development'))
     app.use(
         session({
-            secret:'imitateDB_development',
+            secret: env.sessionCookieSecret,
             resave:false,
             saveUninitialized:true,
             cookie:{
                 maxAge:10*60*1000
             },
             store: MongoStore.create({
-                mongoUrl:'mongodb://localhost/cachingdb',
+                mongoUrl:`mongodb://localhost/${env.cachingdb}`,
                 autoRemove:'disabled',
 
             },function(err){
@@ -53,21 +53,10 @@ if (cluster.isMaster) {
         })
     )
 
-    const captcha = require('svg-captcha-express').create({
-        cookie: 'captcha',
-        background: 'rgb(255,200,150)',
-        fontSize: 60,
-        width: 250,
-        height: 150,
-        charPreset: 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789',
-        size: 5,
-        noise: 3,
-        size: 4, // size of random string
-        color: false
-    });
+    const captcha = require('svg-captcha-express').create(env.captcha);
 
 
-    app.use(express.static('assets'));
+    app.use(express.static(env.assets));
     app.use(expressLayouts);
     app.set('layout extractStyles',true);
     app.set('layout extractScripts',true);

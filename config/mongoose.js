@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
-mongoose.connect('mongodb://localhost/cachingdb');
+const env = require('./environment')
+mongoose.connect(`mongodb://localhost/${env.cachingdb}`);
 
 const cachingDb = mongoose.connection;
 

@@ -1,11 +1,6 @@
 const mysql = require('mysql2');
-
-const connection = mysql.createConnection({
-    host:'localhost',
-    user:'mimicDB',
-    password:'mimicDB123',
-    database: 'mimic'
-});
+const env = require('../config/environment')
+const connection = mysql.createConnection(env.db);
 
 connection.connect();
 
