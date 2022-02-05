@@ -12,6 +12,7 @@ router.post('/getCSVData',queryPage.sendCSVResult);
 router.get('/get-dropdown',queryPage.getColumnSelectionDropdown);
 router.get('/get-columnValues',queryPage.getColumnValues);
 router.get('/download',queryPage.queryCSVResult);
+
 module.exports = router;
 
 

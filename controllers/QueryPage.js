@@ -13,6 +13,14 @@ const env = require('../config/environment')
 // var query_result_count = 0;
 // var query_details = {}
 
+module.exports.getDomainForm = function(req,res){
+    return res.render('queryForm_Domain')
+}
+
+module.exports.getMotifForm = function(req,res){
+    return res.render('queryForm_Motif')
+}
+
 module.exports.getQueryPageOnLoad = function(req,res){
     req.session.queryResult = []
     req.session.query_result_count = 0
@@ -44,9 +52,10 @@ var validateCaptcha =  async function(req,res){
     if(req.session.captcha != req.body['captcha-val']){
         // console.log("actual captcha",req.session.captcha)
         // console.log("entered captcha",req.body['captcha-val'])
+        // console.log(req.session.captcha != req.body['captcha-val'])
         captcha_validation_token =  false
     }else if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null){
-        console.log("request body problem")
+        // console.log("request body problem")
         captcha_validation_token = false
     }else{
 

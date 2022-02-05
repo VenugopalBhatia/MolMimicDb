@@ -1,0 +1,109 @@
+<!-- <link rel="stylesheet" href="/css/sidePanel.css"> -->
+
+<div id="main_form" class="main_form">
+    <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+    <div id ="main_form_domain">
+    
+    
+    
+        <form id = "sidepanelQueryForm" action="/query" method = "POST" class = "side">
+            <!-- <fieldset id = "domainMotifSelection">
+                <input type="radio" name = "domainMotifSelection" id = "domain_radio" value = "domain">
+                <label for="domain">Domain</label>
+                <input type="radio" name = "domainMotifSelection" id = "motif_radio" value = "motif">
+                <label for="motif">Motif</label>
+    
+            </fieldset> -->
+            <fieldset id = "pathogenSelection">
+                
+                <input type="radio" name="pathogenSelection" id="bacteria_table" value = "bacteria_domainpair">
+                <label for="bacteria_table">Bacteria</label>
+                <input type="radio" name="pathogenSelection" id="fungus_table" value = "fungus_domainpair">
+                <label for="fungus_table">Fungi</label>
+                <input type="radio" name="pathogenSelection" id="virus_table" value = "virus_domainpair">
+                <label for="virus_table">Virus</label>
+                <input type="radio" name="pathogenSelection" id="others_table" value = "others_domainpair">
+                <label for="others_table">Others</label>
+    
+            </fieldset>
+            <fieldset id = "columnSelection">
+                <span class = "tableColumns">
+                    <select id="tableColumns" name="tableColumns" style = "width: 95%; visibility: hidden"></select>
+                </span>
+    
+            </fieldset>
+            <fieldset id = "specificColumnEntrySelection">
+                <span class = "searchByColumn">
+                    <select id="searchByColumn" name="searchByColumn" style = "width: 95%; visibility: hidden"></select>
+                </span>
+            </fieldset>
+            
+            <fieldset id= "captcha">
+                <div>
+                    <img name = "captcha" src="/Captcha.jpg" alt="">
+                </div>
+                <div>
+                    <button id = "refresh-captcha" >refresh</button>
+                    <input type="text" name = "captcha-val" placeholder = "Kindly enter values">
+                </div>
+                
+                
+            </fieldset>
+            
+            <fieldset id = "fetchResults">
+                <input type="submit" id = "fetchData" value="Go">
+            </fieldset>
+
+            
+    
+        </form>
+
+        
+    
+    </div>
+
+</div>
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/css/select2-bootstrap-5-theme.css" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LcBXPUaAAAAAHNi4TArFifOwyJUq-lZ34LoX7jV"></script>
+<script type = "text/javascript" src = "/js/QueryPage.js"></script>
+<script>
+
+    $('#sidepanelQueryForm').submit(function(event){
+        event.preventDefault();
+        grecaptcha.ready(function() {
+        // do request for recaptcha token
+        // response is promise with passed token
+        grecaptcha.execute('6LcBXPUaAAAAAHNi4TArFifOwyJUq-lZ34LoX7jV', {action:'validate_captcha'})
+        .then(function(token) {
+            // add token value to form
+            
+            $('#sidepanelQueryForm').prepend('<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value = "' + token + '">')
+            $('#sidepanelQueryForm').prepend('<input type="hidden" name="action" value="query-form">')
+            $('#sidepanelQueryForm').off('submit').submit()
+            // document.getElementById('g-recaptcha-response').value = token;
+        });
+    })
+
+    })
+    
+
+    // setInterval(function () {
+    //     grecaptcha.execute('6LcBXPUaAAAAAHNi4TArFifOwyJUq-lZ34LoX7jV', {action:'validate_captcha'})
+    //               .then(function(token) {
+    //         // add token value to form
+    //         document.getElementById('g-recaptcha-response').value = token;
+    //     });
+
+    // },90*1000)
+
+</script>
+
+
+
