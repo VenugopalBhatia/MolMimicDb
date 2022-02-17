@@ -52,7 +52,7 @@ const production = {
         fontSize: 60,
         width: 250,
         height: 150,
-        charPreset: 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789',
+        charPreset: 'abcdefghijkmnopqrstuvwxyz0123456789',
         noise: 3,
         size: 4, // size of random string
         color: true
