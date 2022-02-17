@@ -10,9 +10,32 @@
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
   }
+
+  .sidepanelQueryForm {
+    height: 100vh; /* Specify a height */
+    /* width:100px; 0 width - change this with JavaScript */
+    /* position: fixed; Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    right: 0;
+    background-image: linear-gradient( #05294df7  , #153e69d1);
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
+  }
   
   /* The sidepanel links */
   .sidepanel fieldset{
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #2b2b2c;
+    display: block;
+    border: none;
+    transition: 0.3s;
+  }
+
+  .sidepanelQueryForm fieldset{
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 18px;

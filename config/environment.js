@@ -48,14 +48,14 @@ const production = {
     assets: process.env.assets,
     captcha:{
         cookie: process.env.captchaCookie,
-        background: 'rgb(255,200,150)',
+        background: 'rgb(256,256,256)',
         fontSize: 60,
         width: 250,
         height: 150,
         charPreset: 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789',
         noise: 3,
         size: 4, // size of random string
-        color: false
+        color: true
     },
     smtp:{
         service:'gmail',
