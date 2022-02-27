@@ -72,6 +72,9 @@
                                         <%} else if(column == "Host_Interactor_Protein_ID" ){ %>
 
                                             <a href="https://www.uniprot.org/uniprot/<%= rows[i][column] %>"><%= rows[i][column]%></a>
+                                        <%} else if(column == "Pubmed_ID" ){ %>
+
+                                            <a href="https://pubmed.ncbi.nlm.nih.gov/<%= rows[i][column] %>"><%= rows[i][column]%></a>
                                         <%} else {%>
                                             <%= rows[i][column]%>
                                         <%}%>
