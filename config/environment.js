@@ -33,8 +33,7 @@ const development = {
         host: process.env.dbHost,
         user: process.env.dbUser,
         password: process.env.dbPassword,
-        database: process.env.dbName,
-        port: '/tmp/mysql.sock'
+        database: process.env.dbName
     }
 
 
