@@ -13,6 +13,12 @@
 
 }
 
+.Interpretation{
+    
+    margin: 2%;
+
+}
+
 .inst_text{
     list-style-type: none;
     width:75%;
@@ -27,6 +33,11 @@
 
 .inst_img{
     width:48%;
+
+}
+
+.intp_img{
+    width:90%;
 
 }
 

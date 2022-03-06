@@ -21,6 +21,10 @@ module.exports.getMotifForm = function(req,res){
     return res.render('queryForm_Motif')
 }
 
+module.exports.getInterpretationPage = function(req,res){
+    return res.render('interpretationofResults')
+}
+
 module.exports.getQueryPageOnLoad = function(req,res){
     req.session.queryResult = []
     req.session.query_result_count = 0
